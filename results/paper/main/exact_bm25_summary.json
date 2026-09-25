@@ -120,9 +120,9 @@
         "outer_holdout_queries": 1739,
         "semantic_recall_at_20": 0.8164654015717846,
         "duetrank_recall_at_20": 0.8241006964411219,
-        "pisces_union_at_10_recall": 0.7919781483611271,
-        "pisces_union_mean_output_documents": 17.31991566034119,
-        "duetrank_recall_at_pisces_cardinality": 0.8149159798095967
+        "top10_path_union_recall": 0.7919781483611271,
+        "top10_path_union_mean_output_documents": 17.31991566034119,
+        "duetrank_recall_at_union_cardinality": 0.8149159798095967
       },
       "scope": "exact BM25 ordering within the returned lexical candidate set; candidate omissions remain unrecoverable"
     },
@@ -246,9 +246,9 @@
         "outer_holdout_queries": 3740,
         "semantic_recall_at_20": 0.7062388591800357,
         "duetrank_recall_at_20": 0.754367201426025,
-        "pisces_union_at_10_recall": 0.7438057040998217,
-        "pisces_union_mean_output_documents": 17.638680926916223,
-        "duetrank_recall_at_pisces_cardinality": 0.7488859180035651
+        "top10_path_union_recall": 0.7438057040998217,
+        "top10_path_union_mean_output_documents": 17.638680926916223,
+        "duetrank_recall_at_union_cardinality": 0.7488859180035651
       },
       "scope": "exact BM25 ordering within the returned lexical candidate set; candidate omissions remain unrecoverable"
     },
@@ -372,9 +372,9 @@
         "outer_holdout_queries": 3526,
         "semantic_recall_at_20": 0.5848459065986009,
         "duetrank_recall_at_20": 0.6268198147097751,
-        "pisces_union_at_10_recall": 0.579599168084704,
-        "pisces_union_mean_output_documents": 17.5241066364152,
-        "duetrank_recall_at_pisces_cardinality": 0.6044148232179997
+        "top10_path_union_recall": 0.579599168084704,
+        "top10_path_union_mean_output_documents": 17.5241066364152,
+        "duetrank_recall_at_union_cardinality": 0.6044148232179997
       },
       "scope": "exact BM25 ordering within the returned lexical candidate set; candidate omissions remain unrecoverable"
     }

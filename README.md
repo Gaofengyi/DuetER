@@ -19,7 +19,7 @@ HE, MPC, PIR, or ORAM. The cloud observes keyed compartment/posting accesses,
 compartment sizes, candidate and timing traces, and coordinates and distance
 orders inside each accessed compartment. Independent aliases remove direct
 cross-path identifier equality; they do not hide access-pattern correlation.
-The attack scripts in `experiments/` and audited outputs in
+The attack scripts in `experiments/` and reported outputs in
 `results/paper/security/` quantify this operating point.
 
 The NumPy pseudorandom generator is used for deterministic experiments. It is
@@ -33,7 +33,6 @@ experiments/       Retrieval, ablation, security, and plotting programs
 scripts/           DuetER reproduction and release-validation drivers
 tests/             Dataset-free smoke tests
 results/paper/     Compact JSON/CSV/Markdown artifacts used by the paper
-docs/              Index-design notes
 ```
 
 ## Installation
@@ -84,7 +83,7 @@ run.
 python scripts/reproduce.py --profile full --dry-run
 
 # Execute one complete-corpus dataset after data/model preparation
-python experiments/benchmark_dual_compartment_full.py \
+python experiments/run_full_corpus.py \
   --dataset nq --split test --projection-dimension 256 \
   --semantic-probes 128 --device cuda \
   --cache-root experiments/cache/dual_compartment_full \
@@ -100,18 +99,16 @@ python scripts/reproduce.py --profile ablations --dry-run
 The full corpora contain 2.68M NQ, 5.23M HotpotQA, and 8.84M MS MARCO
 documents. Complete reproduction requires substantial disk space for source
 corpora, embeddings, compartment coordinates, and indexes. The released result
-summaries allow table-level auditing without downloading those intermediates.
+summaries reproduce the paper tables without downloading those intermediates.
 See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for dataset splits, main parameters,
 hardware, seeds, and the mapping from paper claims to artifacts.
 
-## Comparison artifacts
+## Scope
 
-This release contains only DuetER implementation code. It does not redistribute
-external systems, functional substitutes for them, or scripts that build and
-execute them. Compact comparison values used by the paper remain under
-`results/paper/baselines/` as non-executable audit metadata with explicit
-provenance. Reproducing an external baseline requires obtaining its official
-source from the original authors and following its license.
+This release contains only the final DuetER implementation and the experiments
+needed to reproduce its main utility, efficiency, ablation, and leakage results.
+It does not redistribute external systems, functional substitutes, exploratory
+index versions, or comparison-execution scripts.
 
 ## Data and models
 

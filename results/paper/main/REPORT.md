@@ -2,7 +2,7 @@
 
 ## RQ1 utility
 
-| Data | Split/Q | Local depth S/L | S nDCG ret. | L nDCG ret. | S→Dual nDCG@10 | Dual R@20 | Pisces U10 R |
+| Data | Split/Q | Local depth S/L | S nDCG ret. | L nDCG ret. | S→Dual nDCG@10 | Dual R@20 | Top-10 union R |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | NQ | test/3,452 | 16/16 | 0.9942 | 0.9965 | 0.51513→0.51932 | 0.82349 | 0.77434 |
 | HotpotQA | test/7,405 | 16/8 | 0.9881 | 0.9826 | 0.64062→0.66219 | 0.73761 | 0.71649 |

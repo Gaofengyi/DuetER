@@ -3,7 +3,7 @@
 ## Setup
 
 - Construction: the current CCADPE implementation in
-  `benchmark_dual_compartment_full.py`.
+  `run_full_corpus.py`.
 - Threat view: only the synchronized compartment-local query coordinates and
   query/cell co-access timing visible to the honest-but-curious cloud.
 - Wire precision: every local query coordinate is quantized to `float16` before

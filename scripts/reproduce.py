@@ -23,7 +23,7 @@ PROFILES: dict[str, list[list[str]]] = {
     ],
     "full": [
         command(
-            "experiments/benchmark_dual_compartment_full.py",
+            "experiments/run_full_corpus.py",
             "--dataset", dataset,
             "--split", "dev" if dataset == "msmarco" else "test",
             "--projection-dimension", "256",
@@ -36,19 +36,19 @@ PROFILES: dict[str, list[list[str]]] = {
     ],
     "security": [
         command(
-            "experiments/run_compartment_security.py",
+            "experiments/run_security.py",
             "--projection-dim", "256",
             "--beta", "0.10",
             "--scale", "3.0",
             "--output", "results/generated/compartment_security.json",
         ),
-        command("experiments/attack_cross_compartment_stitching.py"),
+        command("experiments/attack_compartment_stitching.py"),
     ],
     "ablations": [
-        command("experiments/ablate_compartment_nprobe.py"),
-        command("experiments/ablate_compartment_larger_lexical_depth.py"),
-        command("experiments/ablate_duetrank_calibration_final.py"),
-        command("experiments/measure_compartment_projection.py"),
+        command("experiments/ablate_probes.py"),
+        command("experiments/ablate_local_depth.py"),
+        command("experiments/ablate_calibration.py"),
+        command("experiments/ablate_projection.py"),
     ],
 }
 PROFILES["all"] = (

@@ -6,15 +6,15 @@ import json
 
 import numpy as np
 
-from compartment_dpe import CompartmentDPEIndex
-from dueter_common import (
+from ccadpe import CompartmentDPEIndex
+from common import (
     BM25Index,
     mips_document_transform,
     mips_query_transform,
     normalize_rows,
     rrf,
 )
-from semantic_candidate_index import KeyedResidualSphericalIVF
+from semantic_index import KeyedResidualSphericalIVF
 
 
 def build_path(
