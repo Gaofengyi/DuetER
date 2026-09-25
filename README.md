@@ -116,8 +116,7 @@ for protocol-output validation; its Python runtime is **not** an official
 cryptographic Pisces measurement. Official Pisces execution is handled by the
 scripts under `scripts/` against a separately obtained upstream checkout. The
 released controlled FiQA summary and official logs-derived summaries are in
-`results/paper/baselines/`. PRAG entries are explicitly labeled as
-author-reported literature values.
+`results/paper/baselines/`. 
 
 Third-party source trees and binaries are not redistributed. Obtain each
 baseline from its upstream repository and follow its license.
