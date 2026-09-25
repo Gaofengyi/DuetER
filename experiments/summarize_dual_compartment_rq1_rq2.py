@@ -61,9 +61,9 @@ def load_row(label: str, path: Path) -> dict[str, object]:
         "heldout_dual_gain_ci95_high": gain["ci95_high"],
         "semantic_recall20": matched["semantic_recall_at_20"],
         "dual_recall20": matched["duetrank_recall_at_20"],
-        "pisces_union10_recall": matched["pisces_union_at_10_recall"],
-        "dual_recall_at_pisces_cardinality": matched[
-            "duetrank_recall_at_pisces_cardinality"
+        "top10_path_union_recall": matched["top10_path_union_recall"],
+        "dual_recall_at_union_cardinality": matched[
+            "duetrank_recall_at_union_cardinality"
         ],
         "server_batched_ms": efficiency["server_online_mean_ms_batched"],
         "server_interactive_ms": efficiency[
@@ -121,7 +121,7 @@ def main() -> None:
         "",
         "## RQ1 utility",
         "",
-        "| Data | Split/Q | Local depth S/L | S nDCG ret. | L nDCG ret. | S→Dual nDCG@10 | Dual R@20 | Pisces U10 R |",
+        "| Data | Split/Q | Local depth S/L | S nDCG ret. | L nDCG ret. | S→Dual nDCG@10 | Dual R@20 | Top-10 union R |",
         "|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for row in rows:
@@ -131,7 +131,7 @@ def main() -> None:
             f"{fmt(row['semantic_ndcg10_retention'], 4)} | "
             f"{fmt(row['lexical_ndcg10_retention'], 4)} | "
             f"{fmt(row['heldout_semantic_ndcg10'])}→{fmt(row['heldout_dual_ndcg10'])} | "
-            f"{fmt(row['dual_recall20'])} | {fmt(row['pisces_union10_recall'])} |"
+            f"{fmt(row['dual_recall20'])} | {fmt(row['top10_path_union_recall'])} |"
         )
     lines.extend(
         [

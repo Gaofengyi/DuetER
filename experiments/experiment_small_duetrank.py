@@ -27,7 +27,7 @@ from experiment_candidate_rank_fusion import (
     split_mask,
     training_matrix,
 )
-from run_experiment import load_beir
+from dueter_common import load_beir
 
 
 def recall_rows(

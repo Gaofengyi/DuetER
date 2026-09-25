@@ -30,10 +30,10 @@ key derivation.
 
 ```text
 experiments/       Retrieval, ablation, security, and plotting programs
-scripts/           Reproduction driver and official-Pisces helper scripts
+scripts/           DuetER reproduction and release-validation drivers
 tests/             Dataset-free smoke tests
 results/paper/     Compact JSON/CSV/Markdown artifacts used by the paper
-docs/              Index design and baseline-validation notes
+docs/              Index-design notes
 ```
 
 ## Installation
@@ -67,15 +67,10 @@ python scripts/check_release.py
 python scripts/reproduce.py --profile quick --dry-run
 ```
 
-For a small end-to-end run using the public BEIR SciFact corpus:
+For a dataset-free dual-path end-to-end example:
 
 ```bash
-python experiments/download_beir.py scifact
-python experiments/run_experiment.py \
-  --data-dir experiments/data/scifact \
-  --dataset-name scifact \
-  --dense-backend lsa \
-  --results-dir results/generated/scifact_lsa
+python experiments/quickstart_synthetic.py
 ```
 
 ## Paper reproduction
@@ -109,18 +104,14 @@ summaries allow table-level auditing without downloading those intermediates.
 See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for dataset splits, main parameters,
 hardware, seeds, and the mapping from paper claims to artifacts.
 
-## Baselines
+## Comparison artifacts
 
-`experiments/pisces_reimplementation.py` is a functional reimplementation used
-for protocol-output validation; its Python runtime is **not** an official
-cryptographic Pisces measurement. Official Pisces execution is handled by the
-scripts under `scripts/` against a separately obtained upstream checkout. The
-released controlled FiQA summary and official logs-derived summaries are in
-`results/paper/baselines/`. PRAG entries are explicitly labeled as
-author-reported literature values.
-
-Third-party source trees and binaries are not redistributed. Obtain each
-baseline from its upstream repository and follow its license.
+This release contains only DuetER implementation code. It does not redistribute
+Pisces, PRAG, a functional substitute for either system, or scripts that build
+and execute those systems. Compact comparison values used by the paper remain
+under `results/paper/baselines/` as non-executable audit metadata with explicit
+provenance. Reproducing an external baseline requires obtaining its official
+source from the original authors and following its license.
 
 ## Data and models
 

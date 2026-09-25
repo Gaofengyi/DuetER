@@ -28,7 +28,7 @@ from benchmark_million_semantic_hybrid import (
     load_queries_qrels,
     read_ids,
 )
-from run_experiment import tokenize
+from dueter_common import tokenize
 
 
 ROOT = Path(__file__).resolve().parent

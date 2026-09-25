@@ -804,8 +804,8 @@ def reconstruct_duetrank_and_recall(
             for row in duet_array
         ]
     )
-    pisces_recall = []
-    pisces_sizes = []
+    top10_union_recall = []
+    top10_union_sizes = []
     duet_matched = []
     for repeat in range(len(semantic)):
         recall = np.zeros(len(query_ids), dtype=np.float64)
@@ -842,11 +842,11 @@ def reconstruct_duetrank_and_recall(
             matched[query_index] = len(relevant.intersection(returned)) / max(
                 len(relevant), 1
             )
-        pisces_recall.append(recall)
-        pisces_sizes.append(sizes)
+        top10_union_recall.append(recall)
+        top10_union_sizes.append(sizes)
         duet_matched.append(matched)
-    pisces_recall_array = np.stack(pisces_recall)
-    pisces_sizes_array = np.stack(pisces_sizes)
+    top10_union_recall_array = np.stack(top10_union_recall)
+    top10_union_sizes_array = np.stack(top10_union_sizes)
     duet_matched_array = np.stack(duet_matched)
     return {
         "outer_holdout_queries": int(np.sum(holdout)),
@@ -854,13 +854,13 @@ def reconstruct_duetrank_and_recall(
             np.mean(semantic_recall20[:, holdout])
         ),
         "duetrank_recall_at_20": float(np.mean(duet_recall20[:, holdout])),
-        "pisces_union_at_10_recall": float(
-            np.mean(pisces_recall_array[:, holdout])
+        "top10_path_union_recall": float(
+            np.mean(top10_union_recall_array[:, holdout])
         ),
-        "pisces_union_mean_output_documents": float(
-            np.mean(pisces_sizes_array[:, holdout])
+        "top10_path_union_mean_output_documents": float(
+            np.mean(top10_union_sizes_array[:, holdout])
         ),
-        "duetrank_recall_at_pisces_cardinality": float(
+        "duetrank_recall_at_union_cardinality": float(
             np.mean(duet_matched_array[:, holdout])
         ),
     }

@@ -47,7 +47,7 @@ from typing import Iterable, Iterator
 
 import numpy as np
 
-from run_experiment import fwht_batch, normalize_rows, tokenize
+from dueter_common import fwht_batch, normalize_rows, tokenize
 
 
 ROOT = Path(__file__).resolve().parent

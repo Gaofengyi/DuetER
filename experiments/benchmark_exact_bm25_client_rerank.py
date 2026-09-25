@@ -42,7 +42,7 @@ from benchmark_million_semantic_hybrid import (
     read_ids,
 )
 from experiment_candidate_rank_fusion import run_dataset as run_duetrank
-from run_experiment import tokenize
+from dueter_common import tokenize
 
 
 ROOT = Path(__file__).resolve().parent

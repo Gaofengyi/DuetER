@@ -8,10 +8,10 @@ DuetRank models are excluded because they are generated intermediates.
 - `paper/ablations/`: projection, probe-count, local-depth, and calibration runs;
 - `paper/security/`: topic, neighborhood, anchor, known-query, alias, and
   cross-compartment stitching evaluations;
-- `paper/baselines/`: controlled FiQA and official-Pisces summaries, plus
-  explicitly author-reported PRAG values.
+- `paper/baselines/`: non-executable controlled-FiQA and official-Pisces
+  summaries, plus explicitly author-reported PRAG values. No external-system
+  source or execution scripts are included.
 
 JSON files retain full precision. CSV and Markdown files are convenience views.
 The repository release check validates JSON syntax and rejects absolute local
 paths or files larger than the configured artifact limit.
-

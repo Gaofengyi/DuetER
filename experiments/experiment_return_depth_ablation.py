@@ -60,7 +60,7 @@ from experiment_candidate_rank_fusion import (
     rank_maps,
     split_mask,
 )
-from run_experiment import tokenize
+from dueter_common import tokenize
 
 
 SEMANTIC_DEPTHS = (50, 100, 200)

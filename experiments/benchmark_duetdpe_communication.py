@@ -4,8 +4,8 @@ The benchmark serializes the two encrypted query vectors, fixed-shape HMAC
 probe arrays, and the server response needed for exact client reranking.  The
 response carries an unlinkable alias, an AES-GCM-wrapped exact feature vector,
 and an AES-GCM join capsule for every returned path candidate.  Final evidence
-passage ciphertexts are deliberately excluded, matching the retrieval-only
-boundary used by the Pisces and PRAG reference measurements in the paper.
+passage ciphertexts are deliberately excluded so the benchmark measures only
+the online retrieval-protocol boundary defined by the paper.
 
 This is a byte-serialization benchmark, not a network-throughput benchmark.
 It executes AES-128-GCM and verifies a full serialize/parse/decrypt round trip.

@@ -23,7 +23,7 @@ from pathlib import Path
 
 import numpy as np
 
-from run_experiment import tokenize
+from dueter_common import tokenize
 
 
 ROOT = Path(__file__).resolve().parent

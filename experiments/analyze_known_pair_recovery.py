@@ -14,7 +14,7 @@ from pathlib import Path
 
 import numpy as np
 
-from run_experiment import ConditionalDPE, normalize_rows
+from dueter_common import ConditionalDPE, normalize_rows
 
 
 ROOT = Path(__file__).resolve().parent

@@ -40,7 +40,7 @@ from attack_cross_path_cooccurrence import (
 )
 from benchmark_budgeted_lexical_candidates import keyed_term, select_terms_under_budget
 from benchmark_million_semantic_hybrid import load_queries_qrels
-from run_experiment import tokenize
+from dueter_common import tokenize
 
 
 CONFIGS = {

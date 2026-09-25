@@ -16,7 +16,6 @@ modules by filename. Run commands from the repository root as shown below.
 ## Main evaluations
 
 - `evaluate_standard_rrf_final.py`: standard fixed RRF control;
-- `benchmark_dueter_fiqa_vm.py`: controlled FiQA DuetER measurement;
 - `summarize_dual_compartment_rq1_rq2.py`: complete-corpus table summaries;
 - `plot_dual_compartment_path_utility.py`: main path-utility figure;
 - `plot_standard_rrf_figure.py`: figure including the fixed-RRF control.
@@ -41,10 +40,8 @@ Other files retain experiments used during index design, validation, and
 reviewer-response audits. Outputs are written to ignored cache/result locations;
 the compact final artifacts are under `../results/paper/`.
 
-## Historical controls
+## Internal controls
 
-Scripts containing `global`, `million`, `lsh`, or `reimplementation` in their
-name are retained for ablation/provenance. They are not the final CCADPE system.
-In particular, `pisces_reimplementation.py` validates functional output only and
-does not instantiate the official cryptographic protocol.
-
+Scripts containing `global`, `million`, or `lsh` in their name are retained for
+DuetER ablation and provenance. They are not the final CCADPE operating point.
+No external-system implementation or comparison-execution code is distributed.

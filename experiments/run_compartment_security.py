@@ -27,7 +27,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
 from compartment_dpe import CompartmentDPEIndex
-from run_experiment import cooccurrence_link_attack, load_beir, normalize_rows, top_indices
+from dueter_common import cooccurrence_link_attack, load_beir, normalize_rows, top_indices
 from run_security_attacks import balanced_subset, wilson_interval
 from semantic_candidate_index import KeyedResidualSphericalIVF
 

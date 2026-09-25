@@ -5,7 +5,7 @@ Attacks:
 2. known-record graph/fingerprint alignment on SciFact document ciphertexts;
 3. neighborhood reconstruction (kNN overlap and clustering agreement).
 
-The existing cross-view co-occurrence attack remains in run_experiment.py.
+Cross-view co-occurrence is evaluated by the dedicated attack script.
 """
 
 from __future__ import annotations
@@ -37,7 +37,7 @@ from sklearn.metrics import (
     normalized_mutual_info_score,
 )
 
-from run_experiment import ConditionalDPE, neighbor_overlap, normalize_rows
+from dueter_common import ConditionalDPE, neighbor_overlap, normalize_rows
 
 
 def mean_summary(values: list[float]) -> dict[str, float | list[float]]:
@@ -276,7 +276,7 @@ if __name__ == "__main__":
         "document_attacks": document_attacks(parsed),
         "cross_view_linkage": {
             "source": "primary Granite run results.json",
-            "note": "Executed by run_experiment.py; paper reports 3.04% top-1 with independent aliases and 100% with shared identifiers.",
+            "note": "Executed by attack_cross_path_cooccurrence.py; the paper reports the independent- and shared-alias settings separately.",
         },
     }
     parsed.output.parent.mkdir(parents=True, exist_ok=True)

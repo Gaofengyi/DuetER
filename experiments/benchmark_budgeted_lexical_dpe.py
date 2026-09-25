@@ -29,7 +29,7 @@ from benchmark_million_semantic_hybrid import (
     read_ids,
 )
 from experiment_candidate_rank_fusion import split_mask
-from run_experiment import tokenize
+from dueter_common import tokenize
 
 
 FULL_DOCUMENTS = {

@@ -58,7 +58,7 @@ def draw_hatched_rect(
 
 
 def draw_pdf(rows: dict[str, dict], path: Path) -> None:
-    # Compact 4.25 x 2.36 inch layout with Pisces-style group density.
+    # Compact 4.25 x 2.36 inch layout with dense grouped bars.
     width, height = 306.0, 170.0
     c = canvas.Canvas(str(path), pagesize=(width, height))
     c.setTitle("Complete-corpus plaintext and DPE path utility")

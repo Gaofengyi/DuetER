@@ -10,9 +10,9 @@
 | FiQA | 57,638 documents | 300 sampled test queries for the controlled comparison |
 
 The main machine used an Intel Core i9-14900HX CPU and an NVIDIA GeForce RTX
-4060 Laptop GPU. The controlled Pisces/DuetER comparison used the same Ubuntu
-20.04.5 VMware guest with 16 vCPUs and 32 GiB RAM. Latency should be interpreted
-with the execution mode and hardware recorded in each result artifact.
+4060 Laptop GPU. The controlled comparison used the same Ubuntu 20.04.5 VMware
+guest with 16 vCPUs and 32 GiB RAM. Latency should be interpreted with the
+execution mode and hardware recorded in each result artifact.
 
 ## Main operating point
 
@@ -70,11 +70,10 @@ embeddings, and package versions. Timing is not deterministic and should be
 remeasured after warm-up on the target hardware. GPU kernels and library
 versions can introduce small numerical differences near ranking ties.
 
-## Baseline interpretation
+## Comparison-result interpretation
 
-The controlled FiQA comparison uses the same corpus, 300-query workload,
-output policy, and Ubuntu guest for DuetER and the official Pisces execution.
+The controlled FiQA result uses the same corpus, 300-query workload, output
+policy, and Ubuntu guest for DuetER and the official Pisces execution.
 Cross-paper PRAG values are retained only as context and are not a controlled
-head-to-head measurement. Functional reimplementations are named as such and
-must not be presented as official cryptographic runtimes.
-
+head-to-head measurement. External implementation and execution code are not
+distributed in this repository.

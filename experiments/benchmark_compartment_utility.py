@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 
 from compartment_dpe import CompartmentDPEIndex
-from run_experiment import ConditionalDPE, evaluate, load_beir, normalize_rows, top_indices
+from dueter_common import ConditionalDPE, evaluate, load_beir, normalize_rows, top_indices
 from semantic_candidate_index import KeyedResidualSphericalIVF
 
 

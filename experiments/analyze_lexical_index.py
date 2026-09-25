@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 
 from lexical_mips_index import TailOrthogonalSparseMIPSIndex
-from run_experiment import BM25Index, load_scifact, mips_document_transform, mips_query_transform, top_indices
+from dueter_common import BM25Index, load_scifact, mips_document_transform, mips_query_transform, top_indices
 
 
 ROOT = Path(__file__).resolve().parent

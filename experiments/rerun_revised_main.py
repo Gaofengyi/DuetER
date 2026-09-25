@@ -61,7 +61,7 @@ from evaluate_lexical_d8192_rc32 import (
 )
 from evaluate_lexical_d8192_rc32_b_sweep import build_local_cache, retrieve
 from experiment_candidate_rank_fusion import run_dataset as run_duetrank
-from run_experiment import tokenize
+from dueter_common import tokenize
 
 
 CELLS = 16

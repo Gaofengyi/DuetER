@@ -9,7 +9,7 @@ from pathlib import Path
 
 import numpy as np
 
-from run_experiment import evaluate, load_beir, normalize_rows, top_indices
+from dueter_common import evaluate, load_beir, normalize_rows, top_indices
 from semantic_candidate_index import KeyedResidualSphericalIVF
 
 

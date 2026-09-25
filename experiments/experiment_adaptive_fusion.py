@@ -27,7 +27,7 @@ from benchmark_million_semantic_hybrid import (
     load_queries_qrels,
     read_ids,
 )
-from run_experiment import tokenize
+from dueter_common import tokenize
 
 
 WEIGHTS = np.asarray([0.80, 0.85, 0.90, 0.93, 0.95, 0.97, 0.98, 1.0])

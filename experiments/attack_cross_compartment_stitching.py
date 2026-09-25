@@ -47,7 +47,7 @@ from benchmark_million_semantic_hybrid import (
     encrypt_queries,
     load_queries_qrels,
 )
-from run_experiment import tokenize
+from dueter_common import tokenize
 
 
 BASE_SEED = 20260917

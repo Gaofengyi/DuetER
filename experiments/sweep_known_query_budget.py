@@ -9,7 +9,7 @@ import numpy as np
 
 from compartment_dpe import CompartmentDPEIndex
 from run_compartment_security import global_known_query_recovery, primary_document_view
-from run_experiment import normalize_rows
+from dueter_common import normalize_rows
 from semantic_candidate_index import KeyedResidualSphericalIVF
 
 

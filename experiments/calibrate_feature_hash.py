@@ -9,7 +9,7 @@ from pathlib import Path
 
 import numpy as np
 
-from run_experiment import BM25Index, load_beir, tokenize, top_indices
+from dueter_common import BM25Index, load_beir, tokenize, top_indices
 
 
 ROOT = Path(__file__).resolve().parent

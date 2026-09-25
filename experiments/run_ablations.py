@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 
 from lexical_mips_index import KeyedBM25TailIndex
-from run_experiment import (
+from dueter_common import (
     BM25Index,
     ConditionalDPE,
     evaluate,

@@ -19,14 +19,7 @@ def command(*parts: str) -> list[str]:
 PROFILES: dict[str, list[list[str]]] = {
     "quick": [
         command("-m", "unittest", "discover", "-s", "tests", "-v"),
-        command("experiments/download_beir.py", "scifact"),
-        command(
-            "experiments/run_experiment.py",
-            "--data-dir", "experiments/data/scifact",
-            "--dataset-name", "scifact",
-            "--dense-backend", "lsa",
-            "--results-dir", "results/generated/scifact_lsa",
-        ),
+        command("experiments/quickstart_synthetic.py"),
     ],
     "full": [
         command(
@@ -83,4 +76,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
