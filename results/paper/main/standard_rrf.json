@@ -1,5 +1,5 @@
 {
-  "experiment": "standard unweighted RRF on revised exact-BM25 candidate rankings",
+  "experiment": "standard unweighted RRF on final exact-BM25 candidate rankings",
   "evaluation": "same SHA-256 outer holdouts as the final DuetRank figure",
   "bootstrap_samples": 5000,
   "datasets": [

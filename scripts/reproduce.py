@@ -19,21 +19,23 @@ def command(*parts: str) -> list[str]:
 PROFILES: dict[str, list[list[str]]] = {
     "quick": [
         command("-m", "unittest", "discover", "-s", "tests", "-v"),
-        command("experiments/quickstart_synthetic.py"),
     ],
     "full": [
         command(
             "experiments/run_full_corpus.py",
             "--dataset", dataset,
             "--split", "dev" if dataset == "msmarco" else "test",
-            "--projection-dimension", "256",
+            "--semantic-projection-dimension", "256",
+            "--lexical-work-dimension", "8192",
+            "--lexical-projection-dimension", "32",
+            "--lexical-cells", "16",
             "--semantic-probes", "128",
             "--device", "cuda",
-            "--cache-root", "experiments/cache/dual_compartment_full",
+            "--cache-root", "experiments/cache/dueter_final",
             "--output-root", "results/generated/dual_compartment_full",
         )
         for dataset in ("nq", "hotpotqa", "msmarco")
-    ],
+    ] + [command("experiments/exact_bm25.py")],
     "security": [
         command(
             "experiments/run_security.py",
@@ -42,13 +44,11 @@ PROFILES: dict[str, list[list[str]]] = {
             "--scale", "3.0",
             "--output", "results/generated/compartment_security.json",
         ),
-        command("experiments/attack_compartment_stitching.py"),
     ],
     "ablations": [
         command("experiments/ablate_probes.py"),
         command("experiments/ablate_local_depth.py"),
         command("experiments/ablate_calibration.py"),
-        command("experiments/ablate_projection.py"),
     ],
 }
 PROFILES["all"] = (

@@ -572,7 +572,7 @@ def main() -> None:
     semantic_cache = ROOT / "cache" / "million_semantic" / f"{args.dataset}_{args.max_docs}"
     doc_ids = read_ids(semantic_cache / "doc_ids.txt")
     if len(doc_ids) != args.max_docs:
-        raise RuntimeError("the audited million semantic doc-ID manifest is required")
+        raise RuntimeError("the complete-corpus semantic doc-ID manifest is required")
     query_ids, query_texts, qrels, relevant_ids = load_queries_qrels(data_dir)
     db_path = ROOT / "results" / "keyed_fts5" / f"{args.dataset}_{args.max_docs}.sqlite3"
     connection = sqlite3.connect(db_path)

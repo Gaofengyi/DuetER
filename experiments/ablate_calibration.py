@@ -10,6 +10,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
+REPOSITORY_ROOT = ROOT.parent
 if (ROOT / ".deps").exists():
     sys.path.insert(0, str(ROOT / ".deps"))
 
@@ -49,9 +50,9 @@ CONFIG = {
     },
 }
 FRACTIONS = (0.25, 0.50, 1.00)
-COMPARTMENT_ROOT = ROOT / "results" / "dual_compartment_full_p256"
-EXACT_ROOT = ROOT / "results" / "exact_bm25_client_rerank"
-DESTINATION = ROOT / "results" / "exact_bm25_calibration_robustness" / "summary.json"
+COMPARTMENT_ROOT = REPOSITORY_ROOT / "results" / "generated" / "dual_compartment_full"
+EXACT_ROOT = REPOSITORY_ROOT / "results" / "generated" / "exact_bm25_client_rerank"
+DESTINATION = REPOSITORY_ROOT / "results" / "generated" / "ablations" / "calibration.json"
 
 
 def nested_calibration_mask(

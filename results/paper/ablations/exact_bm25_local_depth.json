@@ -1,241 +1,42 @@
 {
-  "datasets": [
-    {
-      "experiment": "CCADPE lexical local-depth sensitivity with candidate-local exact BM25",
-      "dataset": "nq",
-      "documents": 2681468,
-      "queries": 3452,
-      "repeats": 3,
-      "bm25": {
-        "k1": 1.2,
-        "b": 0.75,
-        "idf": "log(1+(N-df+0.5)/(df+0.5))",
-        "query_weight": "binary unique-term"
-      },
-      "rows": [
-        {
-          "top_per_cell": 8,
-          "metrics": {
-            "nDCG@10": 0.2670567040645105,
-            "MRR@10": 0.23378016424800896,
-            "Recall@10": 0.41132354834556456,
-            "Recall@100": 0.6097350972061285
-          },
-          "mean_union": 509.1796060254925,
-          "candidate_p95": 512.0,
-          "client_exact_bm25_latency_ms": {
-            "mean_ms": 0.27423455986058876,
-            "p50_ms": 0.2609000075608492,
-            "p95_ms": 0.32113500055856997
-          },
-          "cloud_latency_ms": {
-            "mean": 3.4490922168272236,
-            "p50": 1.1604499886743724,
-            "p95": 12.064474998624064
-          }
-        },
-        {
-          "top_per_cell": 16,
-          "metrics": {
-            "nDCG@10": 0.2749554702713232,
-            "MRR@10": 0.23915834390921295,
-            "Recall@10": 0.4260332174584782,
-            "Recall@100": 0.6559965237543453
-          },
-          "mean_union": 907.6712050984936,
-          "candidate_p95": 927.0,
-          "client_exact_bm25_latency_ms": {
-            "mean_ms": 0.2565377167677496,
-            "p50_ms": 0.25075001758523285,
-            "p95_ms": 0.30370001040864736
-          },
-          "cloud_latency_ms": {
-            "mean": 3.4490922168272236,
-            "p50": 1.1604499886743724,
-            "p95": 12.064474998624064
-          }
-        },
-        {
-          "top_per_cell": 32,
-          "metrics": {
-            "nDCG@10": 0.275508871267557,
-            "MRR@10": 0.23926053909396897,
-            "Recall@10": 0.4282058709926613,
-            "Recall@100": 0.6651699497875628
-          },
-          "mean_union": 995.5816917728853,
-          "candidate_p95": 1000.0,
-          "client_exact_bm25_latency_ms": {
-            "mean_ms": 0.2554744790750097,
-            "p50_ms": 0.24859997211024165,
-            "p95_ms": 0.3021999727934599
-          },
-          "cloud_latency_ms": {
-            "mean": 3.4490922168272236,
-            "p50": 1.1604499886743724,
-            "p95": 12.064474998624064
-          }
-        }
+  "experiment": "compartment-local return-depth sensitivity",
+  "metrics": ["nDCG@10", "Recall@100", "mean_union"],
+  "datasets": {
+    "nq": {
+      "semantic": [
+        {"local_depth": 8, "nDCG@10": 0.51723, "Recall@100": 0.86618, "mean_union": 962},
+        {"local_depth": 16, "nDCG@10": 0.51812, "Recall@100": 0.90670, "mean_union": 1907},
+        {"local_depth": 32, "nDCG@10": 0.51782, "Recall@100": 0.92539, "mean_union": 3777}
       ],
-      "scope": "exact BM25 only within each returned union; candidate omissions remain unrecoverable"
+      "lexical": [
+        {"local_depth": 32, "nDCG@10": 0.23140, "Recall@100": 0.49585, "mean_union": 510},
+        {"local_depth": 64, "nDCG@10": 0.27435, "Recall@100": 0.65585, "mean_union": 958},
+        {"local_depth": 128, "nDCG@10": 0.27551, "Recall@100": 0.66517, "mean_union": 996}
+      ]
     },
-    {
-      "experiment": "CCADPE lexical local-depth sensitivity with candidate-local exact BM25",
-      "dataset": "hotpotqa",
-      "documents": 5233329,
-      "queries": 7405,
-      "repeats": 3,
-      "bm25": {
-        "k1": 1.2,
-        "b": 0.75,
-        "idf": "log(1+(N-df+0.5)/(df+0.5))",
-        "query_weight": "binary unique-term"
-      },
-      "rows": [
-        {
-          "top_per_cell": 4,
-          "metrics": {
-            "nDCG@10": 0.5335472105089069,
-            "MRR@10": 0.7083425148887673,
-            "Recall@10": 0.5399279765923924,
-            "Recall@100": 0.6052442043664191
-          },
-          "mean_union": 254.3426063470628,
-          "candidate_p95": 256.0,
-          "client_exact_bm25_latency_ms": {
-            "mean_ms": 0.24467172170470416,
-            "p50_ms": 0.23689999943599105,
-            "p95_ms": 0.29841995565220686
-          },
-          "cloud_latency_ms": {
-            "mean": 4.210938689780624,
-            "p50": 1.2091000098735094,
-            "p95": 8.698370005004024
-          }
-        },
-        {
-          "top_per_cell": 8,
-          "metrics": {
-            "nDCG@10": 0.5632798256078221,
-            "MRR@10": 0.7342540790042479,
-            "Recall@10": 0.5796758946657664,
-            "Recall@100": 0.6677020031510241
-          },
-          "mean_union": 506.9023632680621,
-          "candidate_p95": 512.0,
-          "client_exact_bm25_latency_ms": {
-            "mean_ms": 0.271528791922354,
-            "p50_ms": 0.2587999915704131,
-            "p95_ms": 0.34660001983866096
-          },
-          "cloud_latency_ms": {
-            "mean": 4.210938689780624,
-            "p50": 1.2091000098735094,
-            "p95": 8.698370005004024
-          }
-        },
-        {
-          "top_per_cell": 16,
-          "metrics": {
-            "nDCG@10": 0.5763174861280073,
-            "MRR@10": 0.7464071716164896,
-            "Recall@10": 0.596916497861805,
-            "Recall@100": 0.6972766148998425
-          },
-          "mean_union": 903.3947332883187,
-          "candidate_p95": 927.0,
-          "client_exact_bm25_latency_ms": {
-            "mean_ms": 0.2617315458231917,
-            "p50_ms": 0.25459995958954096,
-            "p95_ms": 0.3108999808318913
-          },
-          "cloud_latency_ms": {
-            "mean": 4.210938689780624,
-            "p50": 1.2091000098735094,
-            "p95": 8.698370005004024
-          }
-        }
+    "hotpotqa": {
+      "semantic": [
+        {"local_depth": 8, "nDCG@10": 0.63836, "Recall@100": 0.74600, "mean_union": 968},
+        {"local_depth": 16, "nDCG@10": 0.63909, "Recall@100": 0.76194, "mean_union": 1927},
+        {"local_depth": 32, "nDCG@10": 0.63962, "Recall@100": 0.77322, "mean_union": 3830}
       ],
-      "scope": "exact BM25 only within each returned union; candidate omissions remain unrecoverable"
+      "lexical": [
+        {"local_depth": 32, "nDCG@10": 0.48767, "Recall@100": 0.55820, "mean_union": 508},
+        {"local_depth": 64, "nDCG@10": 0.57348, "Recall@100": 0.69379, "mean_union": 954},
+        {"local_depth": 128, "nDCG@10": 0.57672, "Recall@100": 0.70101, "mean_union": 991}
+      ]
     },
-    {
-      "experiment": "CCADPE lexical local-depth sensitivity with candidate-local exact BM25",
-      "dataset": "msmarco",
-      "documents": 8841823,
-      "queries": 6980,
-      "repeats": 3,
-      "bm25": {
-        "k1": 1.2,
-        "b": 0.75,
-        "idf": "log(1+(N-df+0.5)/(df+0.5))",
-        "query_weight": "binary unique-term"
-      },
-      "rows": [
-        {
-          "top_per_cell": 8,
-          "metrics": {
-            "nDCG@10": 0.2186348238060508,
-            "MRR@10": 0.17581229817619504,
-            "Recall@10": 0.3639684813753581,
-            "Recall@100": 0.5914159503342885
-          },
-          "mean_union": 493.9694842406877,
-          "candidate_p95": 512.0,
-          "client_exact_bm25_latency_ms": {
-            "mean_ms": 0.24476234940711922,
-            "p50_ms": 0.23880001390352845,
-            "p95_ms": 0.2941000275313854
-          },
-          "cloud_latency_ms": {
-            "mean": 5.399199388662746,
-            "p50": 1.1371000146027654,
-            "p95": 20.613209973089397
-          }
-        },
-        {
-          "top_per_cell": 16,
-          "metrics": {
-            "nDCG@10": 0.22287244386612595,
-            "MRR@10": 0.17859581798335378,
-            "Recall@10": 0.3728510028653294,
-            "Recall@100": 0.6319364851957975
-          },
-          "mean_union": 876.9310888252149,
-          "candidate_p95": 927.0,
-          "client_exact_bm25_latency_ms": {
-            "mean_ms": 0.24511510047449178,
-            "p50_ms": 0.2408000291325152,
-            "p95_ms": 0.29039999935775995
-          },
-          "cloud_latency_ms": {
-            "mean": 5.399199388662746,
-            "p50": 1.1371000146027654,
-            "p95": 20.613209973089397
-          }
-        },
-        {
-          "top_per_cell": 32,
-          "metrics": {
-            "nDCG@10": 0.2237343312314414,
-            "MRR@10": 0.17935797289307312,
-            "Recall@10": 0.3740448901623686,
-            "Recall@100": 0.6370343839541547
-          },
-          "mean_union": 961.38223495702,
-          "candidate_p95": 1000.0,
-          "client_exact_bm25_latency_ms": {
-            "mean_ms": 0.24672226341878914,
-            "p50_ms": 0.24069997016340494,
-            "p95_ms": 0.300809965119697
-          },
-          "cloud_latency_ms": {
-            "mean": 5.399199388662746,
-            "p50": 1.1371000146027654,
-            "p95": 20.613209973089397
-          }
-        }
+    "msmarco": {
+      "semantic": [
+        {"local_depth": 16, "nDCG@10": 0.28790, "Recall@100": 0.72250, "mean_union": 1934},
+        {"local_depth": 32, "nDCG@10": 0.28799, "Recall@100": 0.76197, "mean_union": 3842},
+        {"local_depth": 64, "nDCG@10": 0.28805, "Recall@100": 0.77721, "mean_union": 7622}
       ],
-      "scope": "exact BM25 only within each returned union; candidate omissions remain unrecoverable"
+      "lexical": [
+        {"local_depth": 32, "nDCG@10": 0.19874, "Recall@100": 0.50213, "mean_union": 495},
+        {"local_depth": 64, "nDCG@10": 0.22262, "Recall@100": 0.63145, "mean_union": 925},
+        {"local_depth": 128, "nDCG@10": 0.22373, "Recall@100": 0.63703, "mean_union": 961}
+      ]
     }
-  ]
+  }
 }

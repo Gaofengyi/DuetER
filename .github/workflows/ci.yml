@@ -15,5 +15,4 @@ jobs:
           cache: pip
       - run: python -m pip install numpy==2.5.2 scipy==1.18.1 scikit-learn==1.9.0
       - run: python -m unittest discover -s tests -v
-      - run: python experiments/quickstart_synthetic.py
       - run: python scripts/check_release.py

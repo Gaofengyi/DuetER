@@ -11,9 +11,9 @@ The final paper results use ``exact_bm25.py`` to
 recompute standard BM25 from encrypted token payloads on the returned set.
 
 The prototype derives each cell subspace from a hidden base DPE rotation.  The
-base coordinates are never part of the server-visible Compartment view.  This
-lets the experiment reuse the audited full-corpus ciphertext caches instead of
-re-encoding 16.7 million documents.  It is equivalent to applying a keyed
+base coordinates are never part of the server-visible Compartment view.  The
+semantic path reuses the full-corpus ciphertext cache instead of re-encoding
+16.7 million documents.  It is equivalent to applying a keyed
 coordinate-selection projection, sign mask, scale, and translation to each
 cell.  It does not claim to hide cell labels or access patterns.
 """
@@ -42,7 +42,7 @@ if (DEPENDENCY_ROOT / ".gpu_deps").exists() and os.environ.get("DUETER_FORCE_CPU
 try:
     import torch as _torch
 except OSError:
-    # Lexical-only audit scripts do not require Torch. Semantic routines still
+    # Lexical-only runs do not require Torch. Semantic routines still
     # import it locally and therefore fail explicitly if their runtime is absent.
     _torch = None
 
@@ -50,7 +50,7 @@ import joblib
 import numpy as np
 
 from lexical_planner import ROOT
-from lexical_backend import encrypt_query_matrix, query_mips
+from lexical_backend import query_mips
 from semantic_backend import (
     IvfFiles,
     atomic_json,
@@ -125,6 +125,57 @@ def apply_transform(values: np.ndarray, transform: CellTransform) -> np.ndarray:
         selected * transform.signs * transform.multiplier
         + transform.translation
     ).astype(np.float32)
+
+
+def lexical_global_key(work_dimension: int, seed: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    rng = np.random.default_rng(seed + 2)
+    signs = np.asarray([-1.0, 1.0], dtype=np.float32)
+    return (
+        rng.choice(signs, work_dimension),
+        rng.choice(signs, work_dimension),
+        rng.permutation(work_dimension),
+    )
+
+
+def selected_dpe_matrix(
+    output_coordinates: np.ndarray,
+    sign1: np.ndarray,
+    sign2: np.ndarray,
+    permutation: np.ndarray,
+    input_dimension: int,
+) -> np.ndarray:
+    """Map unpadded vectors directly to selected Hadamard-DPE coordinates."""
+    work_dimension = len(sign1)
+    source = permutation[np.asarray(output_coordinates, dtype=np.int64)]
+    inputs = np.arange(input_dimension, dtype=np.int64)
+    parity_table = np.asarray(
+        [int(value).bit_count() & 1 for value in range(work_dimension)],
+        dtype=np.int8,
+    )
+    parity = parity_table[np.bitwise_and(source[:, None], inputs[None, :])]
+    hadamard = (1.0 - 2.0 * parity.astype(np.float32)) / math.sqrt(work_dimension)
+    return (
+        hadamard
+        * sign1[:input_dimension][None, :]
+        * sign2[source][:, None]
+    ).astype(np.float32)
+
+
+def selected_ball_noise(
+    rng: np.random.Generator,
+    rows: int,
+    selected_dimension: int,
+    work_dimension: int,
+    radius: float,
+) -> np.ndarray:
+    """Sample the exact selected-coordinate marginal of uniform ball noise."""
+    selected = rng.normal(size=(rows, selected_dimension)).astype(np.float32)
+    omitted = rng.chisquare(
+        max(work_dimension - selected_dimension, 0), size=rows
+    ).astype(np.float32)
+    norm = np.sqrt(np.sum(selected * selected, axis=1) + omitted)
+    radii = radius * np.power(rng.random(rows), 1.0 / work_dimension)
+    return selected * (radii / np.maximum(norm, 1e-12))[:, None]
 
 
 def keyed_lexical_cells(rows: np.ndarray, cells: int) -> np.ndarray:
@@ -229,8 +280,12 @@ def build_semantic_compartment_cache(
 def build_lexical_compartment_cache(
     source: Path,
     destination: Path,
+    work_dimension: int,
     projection_dimension: int,
     cells: int,
+    beta: float,
+    scale: float,
+    seed: int,
 ) -> dict[str, object]:
     destination.mkdir(parents=True, exist_ok=True)
     metadata_path = destination / "lexical_compartment.json"
@@ -242,15 +297,22 @@ def build_lexical_compartment_cache(
         metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
         if (
             int(metadata["projection_dimension"]) == projection_dimension
+            and int(metadata["work_dimension"]) == work_dimension
             and int(metadata["cells"]) == cells
+            and float(metadata["beta"]) == beta
+            and float(metadata["scale"]) == scale
+            and int(metadata["seed"]) == seed
         ):
             return metadata
         raise RuntimeError("lexical compartment cache has incompatible parameters")
 
     rows = np.load(source / "candidate_rows.npy", mmap_mode="r")
-    base = np.load(source / "lexical_cipher_fp16.npy", mmap_mode="r")
-    if len(rows) != len(base):
-        raise RuntimeError("candidate rows and lexical ciphertexts disagree")
+    sketches = np.load(source / "lexical_sketch_fp16.npy", mmap_mode="r")
+    scope = json.loads((source / "candidate_scope.json").read_text(encoding="utf-8"))
+    maximum_norm = float(scope["maximum_sketch_norm"])
+    if len(rows) != len(sketches):
+        raise RuntimeError("candidate rows and lexical sketches disagree")
+    sign1, sign2, permutation = lexical_global_key(work_dimension, seed)
     assignments = keyed_lexical_cells(rows, cells)
     np.save(cells_path, assignments)
     local = np.lib.format.open_memmap(
@@ -263,15 +325,38 @@ def build_lexical_compartment_cache(
         norms_path, mode="w+", dtype=np.float32, shape=(len(rows),)
     )
     started = time.perf_counter()
+    noise_rng = np.random.default_rng(seed + 2 + 1009)
+    input_dimension = int(sketches.shape[1]) + 1
     for cell in range(cells):
         positions = np.flatnonzero(assignments == cell)
         transform = cell_transform(
-            KEY_LEXICAL, cell, int(base.shape[1]), projection_dimension
+            KEY_LEXICAL, cell, work_dimension, projection_dimension
         )
-        transformed = apply_transform(np.asarray(base[positions]), transform)
-        stored = transformed.astype(np.float16)
-        local[positions] = stored
-        norms[positions] = np.sum(stored.astype(np.float32) ** 2, axis=1)
+        matrix = selected_dpe_matrix(
+            transform.coordinates, sign1, sign2, permutation, input_dimension
+        )
+        for first in range(0, len(positions), 4096):
+            chosen = positions[first : first + 4096]
+            base = np.asarray(sketches[chosen], dtype=np.float32) / maximum_norm
+            base_norm = np.sum(base * base, axis=1)
+            mips = np.empty((len(chosen), input_dimension), dtype=np.float32)
+            mips[:, :-1] = base
+            mips[:, -1] = np.sqrt(np.maximum(0.0, 1.0 - base_norm))
+            selected = scale * (mips @ matrix.T)
+            selected += selected_ball_noise(
+                noise_rng,
+                len(chosen),
+                projection_dimension,
+                work_dimension,
+                3.0 * scale * beta / 8.0,
+            )
+            projected = (
+                selected * transform.signs * transform.multiplier
+                + transform.translation
+            )
+            stored = projected.astype(np.float16)
+            local[chosen] = stored
+            norms[chosen] = np.sum(stored.astype(np.float32) ** 2, axis=1)
         print(
             f"[lexical compartment build] cell {cell + 1:,}/{cells:,} "
             f"rows={len(positions):,}",
@@ -284,8 +369,13 @@ def build_lexical_compartment_cache(
         "base_coordinates_server_visible": False,
         "materialized_candidate_rows": int(len(rows)),
         "cells": cells,
+        "work_dimension": work_dimension,
         "projection_dimension": projection_dimension,
-        "base_work_dimension": int(base.shape[1]),
+        "hash_dimension": int(sketches.shape[1]),
+        "maximum_sketch_norm": maximum_norm,
+        "beta": beta,
+        "scale": scale,
+        "seed": seed,
         "ciphertext_bytes": int(cipher_path.stat().st_size),
         "norm_bytes": int(norms_path.stat().st_size),
         "cell_bytes": int(cells_path.stat().st_size),
@@ -518,6 +608,7 @@ def lexical_compartment_retrieval(
     query_texts: list[str],
     *,
     documents: int,
+    work_dimension: int,
     projection_dimension: int,
     cells: int,
     top_per_cell_values: list[int],
@@ -543,18 +634,7 @@ def lexical_compartment_retrieval(
             for text in query_texts
         ]
     )
-    global_queries = np.stack(
-        [
-            encrypt_query_matrix(
-                plain_queries,
-                source / "lexical_dpe_key.npz",
-                beta,
-                scale,
-                seed + 2027 + repeat * 100003,
-            )
-            for repeat in range(repeats)
-        ]
-    )
+    sign1, sign2, permutation = lexical_global_key(work_dimension, seed)
     candidate_rows = np.load(source / "candidate_rows.npy", mmap_mode="r")
     assignments = np.load(compartment / "lexical_compartment_cells.npy", mmap_mode="r")
     local = np.load(compartment / "lexical_compartment_fp16.npy", mmap_mode="r")
@@ -574,19 +654,40 @@ def lexical_compartment_retrieval(
         cell_transform(
             KEY_LEXICAL,
             cell,
-            int(global_queries.shape[-1]),
+            work_dimension,
             projection_dimension,
         )
         for cell in range(cells)
     ]
+    union = np.unique(
+        np.concatenate([transform.coordinates for transform in transforms])
+    ).astype(np.int32)
+    union_matrix = selected_dpe_matrix(
+        union, sign1, sign2, permutation, plain_queries.shape[1]
+    )
+    lookup = {int(value): index for index, value in enumerate(union)}
     local_queries = np.empty(
         (repeats, len(query_texts), cells, projection_dimension), dtype=np.float32
     )
-    for cell, transform in enumerate(transforms):
-        for repeat in range(repeats):
-            local_queries[repeat, :, cell] = apply_transform(
-                global_queries[repeat], transform
+    for repeat in range(repeats):
+        global_selected = scale * (plain_queries @ union_matrix.T)
+        global_selected += selected_ball_noise(
+            np.random.default_rng(seed + 2027 + repeat * 100003),
+            len(plain_queries),
+            len(union),
+            work_dimension,
+            scale * beta / 8.0,
+        )
+        for cell, transform in enumerate(transforms):
+            positions = np.asarray(
+                [lookup[int(value)] for value in transform.coordinates], dtype=np.int32
             )
+            local_queries[repeat, :, cell] = (
+                global_selected[:, positions]
+                * transform.signs
+                * transform.multiplier
+                + transform.translation
+            ).astype(np.float16).astype(np.float32)
 
     for query_index, raw_row in enumerate(raw_candidates):
         candidates = np.asarray(raw_row[raw_row >= 0], dtype=np.int32)
@@ -712,17 +813,17 @@ def communication_bytes(
     lexical_top: int,
     semantic_probes: int,
     lexical_cells: int,
-    projection_dimension: int,
+    semantic_projection_dimension: int,
+    lexical_projection_dimension: int,
 ) -> dict[str, float | int]:
     label_bytes = 16
-    local_query_bytes = projection_dimension * 2
     semantic_records = semantic_probes * semantic_top
     lexical_records = lexical_cells * lexical_top
     semantic_record_bytes = 16 + 12 + (384 * 2 + 16) + 12 + (20 + 16)
     lexical_record_bytes = 16 + 12 + (1024 * 2 + 16) + 12 + (20 + 16)
     upload = (
-        semantic_probes * (label_bytes + local_query_bytes)
-        + lexical_cells * (label_bytes + local_query_bytes)
+        semantic_probes * (label_bytes + semantic_projection_dimension * 2)
+        + lexical_cells * (label_bytes + lexical_projection_dimension * 2)
         + 32
     )
     download = (
@@ -907,7 +1008,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
     queries = np.asarray(queries[: len(query_ids)], dtype=np.float32)
     if dataset == "msmarco" and split == "dev":
         # Full scanning 8.84M vectors for 6,980 queries is outside the
-        # candidate-computation budget.  The audited global-DPE IVF output is
+        # candidate-computation budget.  The pre-compartment IVF output is
         # used only as the semantic retention reference; compartment rankings
         # are generated afresh below.
         semantic_reference_path = (
@@ -932,13 +1033,17 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         )
         semantic_reference_name = "exact dense"
     semantic_setup = build_semantic_compartment_cache(
-        semantic_source, semantic_cache_destination, args.projection_dimension
+        semantic_source, semantic_cache_destination, args.semantic_projection_dimension
     )
     lexical_setup = build_lexical_compartment_cache(
         lexical_source,
         lexical_cache_destination,
-        args.projection_dimension,
+        args.lexical_work_dimension,
+        args.lexical_projection_dimension,
         args.lexical_cells,
+        args.beta,
+        args.scale,
+        args.seed,
     )
     semantic_outputs, semantic_timing = semantic_compartment_retrieval(
         semantic_source,
@@ -946,7 +1051,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         queries,
         embeddings,
         exact_dense,
-        projection_dimension=args.projection_dimension,
+        projection_dimension=args.semantic_projection_dimension,
         probes=args.semantic_probes,
         top_per_cell_values=args.semantic_top_per_cell,
         output_depth=args.semantic_output_depth,
@@ -974,14 +1079,15 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         raw_candidates,
         query_texts,
         documents=documents,
-        projection_dimension=args.projection_dimension,
+        work_dimension=args.lexical_work_dimension,
+        projection_dimension=args.lexical_projection_dimension,
         cells=args.lexical_cells,
         top_per_cell_values=args.lexical_top_per_cell,
         output_depth=args.lexical_output_depth,
         repeats=args.repeats,
         beta=args.beta,
         scale=args.scale,
-        seed=args.seed + 9000,
+        seed=args.seed,
     )
 
     dense_metrics = evaluate(exact_dense, doc_ids, query_ids, qrels)
@@ -1084,7 +1190,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         + 16 * semantic_entries
     )
     lexical_full_storage = documents * (
-        args.projection_dimension * 2 + 4 + 2 + 16
+        args.lexical_projection_dimension * 2 + 4 + 2 + 16
     )
     fts_bytes = (
         ROOT / "results" / "keyed_fts5" / f"{dataset}_full.sqlite3"
@@ -1094,7 +1200,8 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         selected_lexical,
         args.semantic_probes,
         args.lexical_cells,
-        args.projection_dimension,
+        args.semantic_projection_dimension,
+        args.lexical_projection_dimension,
     )
     lookup_trace = json.loads(
         (
@@ -1116,11 +1223,13 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "configuration": {
             "split": split,
             "semantic_retention_reference": semantic_reference_name,
-            "projection_dimension": args.projection_dimension,
+            "semantic_projection_dimension": args.semantic_projection_dimension,
             "semantic_cells": int(semantic_setup["cells"]),
             "semantic_probes": args.semantic_probes,
             "semantic_top_per_cell_sweep": args.semantic_top_per_cell,
             "lexical_cells": args.lexical_cells,
+            "lexical_work_dimension": args.lexical_work_dimension,
+            "lexical_projection_dimension": args.lexical_projection_dimension,
             "lexical_top_per_cell_sweep": args.lexical_top_per_cell,
             "posting_budget": args.posting_budget,
             "repeats": args.repeats,
@@ -1177,7 +1286,9 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", choices=FULL_DOCUMENTS, required=True)
     parser.add_argument("--split", choices=["test", "dev"], default="test")
-    parser.add_argument("--projection-dimension", type=int, default=64)
+    parser.add_argument("--semantic-projection-dimension", type=int, default=256)
+    parser.add_argument("--lexical-work-dimension", type=int, default=8192)
+    parser.add_argument("--lexical-projection-dimension", type=int, default=32)
     parser.add_argument("--semantic-probes", type=int, default=128)
     parser.add_argument(
         "--semantic-top-per-cell",
@@ -1186,9 +1297,9 @@ def parse_args() -> argparse.Namespace:
         default=[2, 4, 8, 16, 32, 64, 128],
     )
     parser.add_argument(
-        "--lexical-top-per-cell", nargs="+", type=int, default=[2, 4, 8, 16]
+        "--lexical-top-per-cell", nargs="+", type=int, default=[32, 64, 128]
     )
-    parser.add_argument("--lexical-cells", type=int, default=64)
+    parser.add_argument("--lexical-cells", type=int, default=16)
     parser.add_argument("--semantic-output-depth", type=int, default=100)
     parser.add_argument("--lexical-output-depth", type=int, default=300)
     parser.add_argument("--posting-budget", type=int, default=50_000)
@@ -1201,10 +1312,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--query-limit", type=int, default=None)
     parser.add_argument("--skip-duetrank", action="store_true")
     parser.add_argument(
-        "--cache-root", type=Path, default=ROOT / "cache" / "dual_compartment_full"
+        "--cache-root", type=Path, default=ROOT / "cache" / "dueter_final"
     )
     parser.add_argument(
-        "--output-root", type=Path, default=ROOT / "results" / "dual_compartment_full"
+        "--output-root",
+        type=Path,
+        default=ROOT.parent / "results" / "generated" / "dual_compartment_full",
     )
     return parser.parse_args()
 

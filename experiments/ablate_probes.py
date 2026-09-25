@@ -13,6 +13,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
+REPOSITORY_ROOT = ROOT.parent
 if (ROOT / ".deps").exists():
     sys.path.insert(0, str(ROOT / ".deps"))
 
@@ -38,7 +39,7 @@ CONFIG = {
     "msmarco": {"split": "dev", "top": 32, "result": "msmarco_dev"},
 }
 PROBES = (64, 128, 256)
-DESTINATION = ROOT / "results" / "dual_compartment_required_ablation" / "nprobe.json"
+DESTINATION = REPOSITORY_ROOT / "results" / "generated" / "ablations" / "nprobe.json"
 
 
 def reference_ranking(dataset: str, query_count: int) -> tuple[np.ndarray, str]:
@@ -68,7 +69,7 @@ def run_dataset(dataset: str) -> dict[str, object]:
     documents = FULL_DOCUMENTS[dataset]
     source = ROOT / "cache" / "full_semantic" / f"{dataset}_{documents}"
     compartment = (
-        ROOT / "cache" / "dual_compartment_full_p256" / f"{dataset}_{documents}"
+        ROOT / "cache" / "dueter_final" / f"{dataset}_{documents}"
     )
     query_ids, _, qrels, _ = load_queries_qrels(ROOT / "data" / dataset, split)
     doc_ids = read_ids(source / "doc_ids.txt")

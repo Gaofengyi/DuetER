@@ -46,8 +46,9 @@ from common import tokenize
 
 
 ROOT = Path(__file__).resolve().parent
-SOURCE_ROOT = ROOT / "results" / "dual_compartment_full_p256"
-DESTINATION_ROOT = ROOT / "results" / "exact_bm25_client_rerank"
+REPOSITORY_ROOT = ROOT.parent
+SOURCE_ROOT = REPOSITORY_ROOT / "results" / "generated" / "dual_compartment_full"
+DESTINATION_ROOT = REPOSITORY_ROOT / "results" / "generated" / "exact_bm25_client_rerank"
 CACHE_ROOT = ROOT / "cache" / "exact_bm25_client_rerank"
 
 CONFIG = {

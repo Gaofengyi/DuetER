@@ -1,126 +1,146 @@
-"""Run the missing larger lexical local-depth points for final-system ablation."""
+"""Reproduce the lexical rows of the final compartment-depth ablation.
+
+Semantic depth rows are emitted by the semantic sweep in ``run_full_corpus``;
+this entry point evaluates the final 8192/32/16 lexical configuration and then
+applies candidate-local exact BM25, as reported in the paper.
+"""
 
 from __future__ import annotations
 
+import argparse
 import json
-import sys
 from pathlib import Path
-
-
-ROOT = Path(__file__).resolve().parent
-if (ROOT / ".deps").exists():
-    sys.path.insert(0, str(ROOT / ".deps"))
-if (ROOT / ".gpu_deps").exists():
-    sys.path.insert(0, str(ROOT / ".gpu_deps"))
 
 import numpy as np
 
+from exact_bm25 import (
+    build_candidate_term_matrix,
+    exact_bm25_rerank,
+    load_document_frequencies,
+    load_document_lengths,
+    query_vocabulary,
+    selected_document_rows,
+)
 from run_full_corpus import (
     FULL_DOCUMENTS,
+    build_lexical_compartment_cache,
     lexical_compartment_retrieval,
     metric_mean,
 )
-from semantic_backend import (
-    atomic_json,
-    load_queries_qrels,
-    read_ids,
-)
+from semantic_backend import atomic_json, load_queries_qrels, read_ids
 
 
+ROOT = Path(__file__).resolve().parent
+DEPTHS = (32, 64, 128)
 CONFIG = {
-    "nq": {
-        "split": "test",
-        "workload": "nq_full",
-        "lexical_label": "nq_full_h1024",
-        "posting_budget": 50_000,
-        "repeats": 3,
-        "cache_suffix": "",
-    },
-    "msmarco": {
-        "split": "dev",
-        "workload": "msmarco_dev_full",
-        "lexical_label": "msmarco_dev_b250k_full_h1024",
-        "posting_budget": 250_000,
-        "repeats": 1,
-        "cache_suffix": "_dev",
-    },
+    "nq": ("test", "nq_full", "nq_full_h1024", 50_000, 3),
+    "hotpotqa": ("test", "hotpotqa_full", "hotpotqa_full_h1024", 50_000, 3),
+    "msmarco": ("dev", "msmarco_dev_full", "msmarco_dev_b250k_full_h1024", 250_000, 1),
 }
 
 
-def run_dataset(dataset: str, cfg: dict[str, object]) -> dict[str, object]:
+def run_dataset(dataset: str) -> dict[str, object]:
+    split, workload, lexical_label, posting_budget, repeats = CONFIG[dataset]
     documents = FULL_DOCUMENTS[dataset]
-    split = str(cfg["split"])
     query_ids, query_texts, qrels, _ = load_queries_qrels(
         ROOT / "data" / dataset, split
     )
-    semantic_source = ROOT / "cache" / "full_semantic" / f"{dataset}_{documents}"
-    lexical_source = (
-        ROOT / "cache" / "full_candidate_lexical_dpe" / str(cfg["lexical_label"])
+    lexical_source = ROOT / "cache" / "full_candidate_lexical_dpe" / lexical_label
+    cache_label = f"{dataset}_{documents}_dev" if split == "dev" else f"{dataset}_{documents}"
+    compartment = ROOT / "cache" / "dueter_final" / cache_label
+    build_lexical_compartment_cache(
+        lexical_source,
+        compartment,
+        work_dimension=8192,
+        projection_dimension=32,
+        cells=16,
+        beta=0.10,
+        scale=3.0,
+        seed=20260917,
     )
-    compartment = (
-        ROOT
-        / "cache"
-        / "dual_compartment_full_p256"
-        / f"{dataset}_{documents}{cfg['cache_suffix']}"
-    )
-    raw_path = (
-        ROOT / "results" / "budgeted_lexical" / f"{cfg['workload']}.raw.npz"
-    )
-    raw_candidates = np.asarray(
-        np.load(raw_path)[f"budget_{cfg['posting_budget']}"][: len(query_ids), :1000],
+    raw = np.asarray(
+        np.load(ROOT / "results" / "budgeted_lexical" / f"{workload}.raw.npz")[
+            f"budget_{posting_budget}"
+        ][:, :1000],
         dtype=np.int32,
     )
-    outputs, timing = lexical_compartment_retrieval(
+    clouds, timing = lexical_compartment_retrieval(
         dataset,
         lexical_source,
         compartment,
-        raw_candidates,
+        raw,
         query_texts,
         documents=documents,
-        projection_dimension=256,
-        cells=64,
-        top_per_cell_values=[32],
+        work_dimension=8192,
+        projection_dimension=32,
+        cells=16,
+        top_per_cell_values=list(DEPTHS),
         output_depth=300,
-        repeats=int(cfg["repeats"]),
+        repeats=repeats,
         beta=0.10,
         scale=3.0,
-        seed=20260917 + 9000,
+        seed=20260917,
     )
-    doc_ids = read_ids(semantic_source / "doc_ids.txt")
-    metrics = metric_mean(outputs[32], doc_ids, query_ids, qrels)
-    return {
-        "dataset": dataset,
-        "documents": documents,
-        "queries": len(query_ids),
-        "split": split,
-        "path": "lexical",
-        "top_per_cell": 32,
-        "repeats": int(cfg["repeats"]),
-        "nDCG@10": float(metrics["nDCG@10"]),
-        "Recall@100": float(metrics["Recall@100"]),
-        "mean_union": float(timing["by_top_per_cell"][32]["candidate_mean"]),
-        "candidate_p95": float(timing["by_top_per_cell"][32]["candidate_p95"]),
-        "server_latency_ms": timing["server_latency_ms"],
-    }
+
+    stacked = np.concatenate([clouds[depth] for depth in DEPTHS], axis=0)
+    selected_rows = selected_document_rows(stacked)
+    terms, term_to_index = query_vocabulary(query_texts)
+    database = ROOT / "results" / "keyed_fts5" / f"{dataset}_full.sqlite3"
+    payload_cache = ROOT / "cache" / "exact_bm25_depth" / f"{dataset}_{split}"
+    full_lengths = load_document_lengths(database, payload_cache / "full_doc_lengths.npy")
+    document_frequencies = load_document_frequencies(database, terms)
+    token_lengths, indptr, indices, counts = build_candidate_term_matrix(
+        ROOT / "data" / dataset / "corpus.jsonl",
+        selected_rows,
+        term_to_index,
+        payload_cache,
+    )
+    exact, _ = exact_bm25_rerank(
+        stacked,
+        selected_rows,
+        token_lengths,
+        indptr,
+        indices,
+        counts,
+        query_texts,
+        term_to_index,
+        document_frequencies,
+        len(full_lengths),
+        float(np.mean(full_lengths)),
+    )
+    doc_ids = read_ids(
+        ROOT / "cache" / "full_semantic" / f"{dataset}_{documents}" / "doc_ids.txt"
+    )
+    rows = []
+    for index, depth in enumerate(DEPTHS):
+        first, last = index * repeats, (index + 1) * repeats
+        metrics = metric_mean(exact[first:last], doc_ids, query_ids, qrels)
+        rows.append(
+            {
+                "local_depth": depth,
+                "nDCG@10": float(metrics["nDCG@10"]),
+                "Recall@100": float(metrics["Recall@100"]),
+                "mean_union": float(timing["by_top_per_cell"][depth]["candidate_mean"]),
+            }
+        )
+    return {"dataset": dataset, "documents": documents, "queries": len(query_ids), "rows": rows}
 
 
 def main() -> None:
-    destination = (
-        ROOT
-        / "results"
-        / "dual_compartment_required_ablation"
-        / "larger_lexical_depth.json"
-    )
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--datasets", nargs="+", choices=tuple(CONFIG), default=list(CONFIG))
+    args = parser.parse_args()
     report = {
-        "experiment": "missing larger lexical local-depth points",
-        "projection_dimension": 256,
-        "lexical_cells": 64,
-        "fixed_seed": 20260917,
-        "datasets": {},
+        "experiment": "final lexical compartment local-depth sensitivity",
+        "fixed_parameters": {
+            "work_dimension": 8192,
+            "projection_dimension": 32,
+            "compartments": 16,
+        },
+        "datasets": [run_dataset(dataset) for dataset in args.datasets],
     }
-    for dataset, cfg in CONFIG.items():
-        report["datasets"][dataset] = run_dataset(dataset, cfg)
-        atomic_json(destination, report)
+    destination = ROOT.parent / "results" / "generated" / "lexical_local_depth.json"
+    atomic_json(destination, report)
     print(json.dumps(report, indent=2))
 
 

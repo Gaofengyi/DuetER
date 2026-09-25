@@ -28,8 +28,34 @@ from sklearn.metrics import accuracy_score
 
 from ccadpe import CompartmentDPEIndex
 from common import cooccurrence_link_attack, load_beir, normalize_rows, top_indices
-from security_attacks import balanced_subset, wilson_interval
 from semantic_index import KeyedResidualSphericalIVF
+
+
+def wilson_interval(successes: int, total: int, z: float = 1.96) -> tuple[float, float]:
+    rate = successes / total
+    denominator = 1.0 + z * z / total
+    center = (rate + z * z / (2.0 * total)) / denominator
+    half = (
+        z
+        * np.sqrt(rate * (1.0 - rate) / total + z * z / (4.0 * total * total))
+        / denominator
+    )
+    return float(center - half), float(center + half)
+
+
+def balanced_subset(
+    data: list[str], labels: np.ndarray, per_class: int, seed: int
+) -> tuple[list[str], np.ndarray]:
+    rng = np.random.default_rng(seed)
+    selected: list[int] = []
+    for label in np.unique(labels):
+        candidates = np.flatnonzero(labels == label)
+        selected.extend(
+            int(value)
+            for value in rng.choice(candidates, min(per_class, len(candidates)), replace=False)
+        )
+    rng.shuffle(selected)
+    return [data[index] for index in selected], labels[selected]
 
 def block_sparse_view(cells: np.ndarray, coordinates: np.ndarray, n_cells: int) -> csr_matrix:
     """One independent linear feature block per observed cell label."""

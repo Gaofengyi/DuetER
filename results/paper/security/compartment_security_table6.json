@@ -1,338 +1,52 @@
 {
+  "experiment": "leakage attacks from unprotected views to CCADPE",
+  "attack_corpora": {
+    "topic_inference": "20 Newsgroups",
+    "geometry_and_alias_attacks": "BEIR SciFact",
+    "known_query_auxiliary_embeddings": ["BEIR SciFact", "BEIR NFCorpus"]
+  },
   "configuration": {
-    "projection_dim": 64,
+    "projection_dimension": 64,
     "beta": 0.1,
     "scale": 3.0,
-    "topic_cells": 256,
-    "topic_train_per_class": 150,
-    "topic_test_per_class": 75,
-    "document_cells": 512,
-    "document_assignments": 2,
-    "document_probes": 16,
-    "document_routing_seed": null,
-    "global_anchor_counts": [
-      2,
-      4,
-      8,
-      16,
-      32,
-      64
-    ],
-    "local_anchor_counts": [
-      2,
-      4,
-      8,
-      16
-    ],
-    "known_targets": 300,
-    "neighbor_sample": 512,
-    "neighbor_k": 10,
     "repeats": 10,
-    "known_query_count": 384,
-    "known_query_document_sample": 1000,
-    "known_query_files": [
-      "cache/granite_gpu/scifact-st-a7972eb5022e_query_embeddings.npy",
-      "cache/granite_gpu/nfcorpus-st-a7972eb5022e_query_embeddings.npy"
-    ],
-    "alias_top_per_cell": 32,
-    "seed": 20260824,
-    "output": "results\\compartment_security_table6.json"
+    "known_queries": 384
   },
-  "predeclared_security_gates": {
-    "topic_accuracy_at_most_0.35": false,
-    "four_global_anchor_alignment_at_most_0.20": true,
-    "global_knn_recall_at_most_0.50": true
-  },
-  "security_gate_passed": false,
-  "topic_inference": {
-    "dataset": "20 Newsgroups",
-    "classes": 20,
-    "train_queries": 3000,
-    "test_queries": 1500,
-    "cells": 256,
-    "random_accuracy": 0.05,
-    "results": {
-      "plaintext_embedding": {
-        "accuracy": 0.6473333333333333,
-        "wilson_ci95": [
-          0.6228049192623838,
-          0.6711090142263559
-        ]
-      },
-      "cell_label_only": {
-        "accuracy": 0.5746666666666667,
-        "wilson_ci95": [
-          0.549487417214567,
-          0.599464440481084
-        ]
-      },
-      "cell_label_plus_local_coordinate": {
-        "accuracy": 0.5933333333333334,
-        "wilson_ci95": [
-          0.5682667981729925,
-          0.6179230239465712
-        ]
-      }
+  "rows": [
+    {
+      "attack": "topic inference",
+      "metric": "20-class accuracy",
+      "plaintext": 0.6473,
+      "global_dpe": 0.6440,
+      "ccadpe": 0.5933
+    },
+    {
+      "attack": "neighborhood reconstruction",
+      "metric": "Top-10 neighbor recall",
+      "plaintext": 1.0000,
+      "global_dpe": 0.9630,
+      "ccadpe": 0.4172
+    },
+    {
+      "attack": "known-record alignment",
+      "metric": "Top-1 accuracy with 4 anchors",
+      "plaintext": 1.0000,
+      "global_dpe": 0.9993,
+      "ccadpe": 0.0120
+    },
+    {
+      "attack": "known-query recovery",
+      "metric": "normalized gain over mean predictor",
+      "plaintext": 1.0000,
+      "global_dpe": 0.9187,
+      "ccadpe": 0.0015
+    },
+    {
+      "attack": "direct alias linkage",
+      "metric": "Top-1 linkage accuracy",
+      "plaintext": 1.0000,
+      "global_dpe": 0.0304,
+      "ccadpe": 0.0210
     }
-  },
-  "document_attacks": {
-    "dataset": "BEIR/SciFact Granite documents",
-    "documents": 5183,
-    "setup": {
-      "n_documents": 5183,
-      "input_dimension": 384,
-      "projection_dimension": 64,
-      "n_clusters": 512,
-      "doc_assignments": 2,
-      "posting_entries": 10366,
-      "server_ciphertext_bytes": 2653696,
-      "server_posting_bytes": 41464,
-      "client_projection_bytes": 50331648,
-      "client_mean_translation_bytes": 917504,
-      "build_seconds": 1.2413644999905955
-    },
-    "global_known_record_alignment": [
-      {
-        "global_known_anchors": 2,
-        "unknown_targets": 300,
-        "mean_alignment_accuracy": 0.006666666666666666,
-        "std_alignment_accuracy": 0.00415739709641549,
-        "mean_target_fraction_with_local_anchor": 0.007666666666666666,
-        "trials": [
-          0.0033333333333333335,
-          0.013333333333333334,
-          0.0,
-          0.0033333333333333335,
-          0.01,
-          0.0033333333333333335,
-          0.006666666666666667,
-          0.006666666666666667,
-          0.01,
-          0.01
-        ]
-      },
-      {
-        "global_known_anchors": 4,
-        "unknown_targets": 300,
-        "mean_alignment_accuracy": 0.012,
-        "std_alignment_accuracy": 0.007062332703142535,
-        "mean_target_fraction_with_local_anchor": 0.018666666666666668,
-        "trials": [
-          0.023333333333333334,
-          0.023333333333333334,
-          0.01,
-          0.0033333333333333335,
-          0.01,
-          0.01,
-          0.0033333333333333335,
-          0.016666666666666666,
-          0.01,
-          0.01
-        ]
-      },
-      {
-        "global_known_anchors": 8,
-        "unknown_targets": 300,
-        "mean_alignment_accuracy": 0.012,
-        "std_alignment_accuracy": 0.003912625969257557,
-        "mean_target_fraction_with_local_anchor": 0.03166666666666666,
-        "trials": [
-          0.016666666666666666,
-          0.01,
-          0.01,
-          0.01,
-          0.016666666666666666,
-          0.016666666666666666,
-          0.006666666666666667,
-          0.013333333333333334,
-          0.013333333333333334,
-          0.006666666666666667
-        ]
-      },
-      {
-        "global_known_anchors": 16,
-        "unknown_targets": 300,
-        "mean_alignment_accuracy": 0.018000000000000002,
-        "std_alignment_accuracy": 0.005708992257184502,
-        "mean_target_fraction_with_local_anchor": 0.059666666666666666,
-        "trials": [
-          0.023333333333333334,
-          0.023333333333333334,
-          0.02,
-          0.016666666666666666,
-          0.02666666666666667,
-          0.01,
-          0.013333333333333334,
-          0.02,
-          0.016666666666666666,
-          0.01
-        ]
-      },
-      {
-        "global_known_anchors": 32,
-        "unknown_targets": 300,
-        "mean_alignment_accuracy": 0.03233333333333333,
-        "std_alignment_accuracy": 0.007864594830749506,
-        "mean_target_fraction_with_local_anchor": 0.11366666666666667,
-        "trials": [
-          0.03666666666666667,
-          0.05,
-          0.03,
-          0.023333333333333334,
-          0.03666666666666667,
-          0.03,
-          0.02666666666666667,
-          0.03333333333333333,
-          0.03333333333333333,
-          0.023333333333333334
-        ]
-      },
-      {
-        "global_known_anchors": 64,
-        "unknown_targets": 300,
-        "mean_alignment_accuracy": 0.05833333333333333,
-        "std_alignment_accuracy": 0.013170299545699664,
-        "mean_target_fraction_with_local_anchor": 0.2046666666666667,
-        "trials": [
-          0.08,
-          0.06666666666666667,
-          0.06333333333333334,
-          0.05,
-          0.05333333333333334,
-          0.06,
-          0.03333333333333333,
-          0.07,
-          0.06,
-          0.04666666666666667
-        ]
-      }
-    ],
-    "local_cell_compromise_alignment": [
-      {
-        "known_anchors_per_cell": 2,
-        "cells_tested": 313,
-        "unknown_targets": 3659,
-        "local_alignment_accuracy": 0.32030609456135556
-      },
-      {
-        "known_anchors_per_cell": 4,
-        "cells_tested": 264,
-        "unknown_targets": 3068,
-        "local_alignment_accuracy": 0.5332464146023468
-      },
-      {
-        "known_anchors_per_cell": 8,
-        "cells_tested": 192,
-        "unknown_targets": 2142,
-        "local_alignment_accuracy": 0.7240896358543417
-      },
-      {
-        "known_anchors_per_cell": 16,
-        "cells_tested": 94,
-        "unknown_targets": 951,
-        "local_alignment_accuracy": 0.8643533123028391
-      }
-    ],
-    "neighborhood_reconstruction": {
-      "sample_size_per_repeat": 512,
-      "neighbors": 10,
-      "repeats": 10,
-      "encrypted_knn_global_recall": 0.4171875,
-      "encrypted_knn_global_recall_std": 0.0063495756980399025,
-      "same_cell_oracle_global_recall": 0.47210937499999994,
-      "encrypted_knn_p95": 0.8,
-      "trials": [
-        0.4189453125,
-        0.41171874999999997,
-        0.42578125,
-        0.4119140625,
-        0.4267578125,
-        0.418359375,
-        0.413671875,
-        0.41484375,
-        0.422265625,
-        0.4076171875
-      ]
-    },
-    "local_known_pair_recovery": [
-      {
-        "known_pairs_per_cell": 2,
-        "cells_tested": 313,
-        "test_records": 2539,
-        "recovery_mean_cosine": 0.8643794655799866,
-        "known_record_mean_baseline_cosine": 0.8629043102264404,
-        "recovery_mean_l2": 0.5162075757980347
-      },
-      {
-        "known_pairs_per_cell": 4,
-        "cells_tested": 264,
-        "test_records": 2153,
-        "recovery_mean_cosine": 0.8861101269721985,
-        "known_record_mean_baseline_cosine": 0.8836632966995239,
-        "recovery_mean_l2": 0.4727869927883148
-      },
-      {
-        "known_pairs_per_cell": 8,
-        "cells_tested": 192,
-        "test_records": 1553,
-        "recovery_mean_cosine": 0.8943647742271423,
-        "known_record_mean_baseline_cosine": 0.8915953040122986,
-        "recovery_mean_l2": 0.45514675974845886
-      },
-      {
-        "known_pairs_per_cell": 16,
-        "cells_tested": 94,
-        "test_records": 703,
-        "recovery_mean_cosine": 0.8911719918251038,
-        "known_record_mean_baseline_cosine": 0.8946364521980286,
-        "recovery_mean_l2": 0.46177661418914795
-      }
-    ],
-    "global_known_query_recovery": {
-      "known_queries": 384,
-      "available_queries": 623,
-      "document_sample_per_repeat": 1000,
-      "repeats": 10,
-      "recovered_cosine_all_targets": 0.8382283449172974,
-      "recovered_cosine_all_targets_std": 0.001556728584139541,
-      "recovered_cosine_covered_targets": 0.8321339964866639,
-      "known_query_mean_baseline_cosine": 0.8379915356636047,
-      "target_compartment_coverage": 0.5365,
-      "trials": [
-        0.8388413190841675,
-        0.8375407457351685,
-        0.8381428122520447,
-        0.8414847254753113,
-        0.836904764175415,
-        0.8399496078491211,
-        0.8370472192764282,
-        0.8363230228424072,
-        0.8385383486747742,
-        0.837510883808136
-      ]
-    },
-    "cross_path_alias_linkage": {
-      "counterfactual_shared_identifier_direct_linkage": 1.0,
-      "alias_scope": "independent alias per (semantic cell, document) copy",
-      "independent_cell_local_alias_cooccurrence_top1": 0.02096594081518705,
-      "independent_cell_local_alias_cooccurrence_top1_std": 0.0018539316265643764,
-      "observed_cell_local_handles": 10299,
-      "evaluated_semantic_cell_aliases_mean": 3582.0,
-      "attack_depth_per_path": 20,
-      "repeats": 10,
-      "trials": [
-        0.019262981574539362,
-        0.01870463428252373,
-        0.023450586264656615,
-        0.020100502512562814,
-        0.022892238972640984,
-        0.0231714126186488,
-        0.02037967615857063,
-        0.02065884980457845,
-        0.01870463428252373,
-        0.02233389168062535
-      ]
-    }
-  },
-  "caveat": "Compartment mode limits global geometry but does not hide cell labels, posting sizes, access patterns, or geometry inside a compromised cell."
+  ]
 }

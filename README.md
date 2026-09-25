@@ -32,7 +32,7 @@ key derivation.
 experiments/       Retrieval, ablation, security, and plotting programs
 scripts/           DuetER reproduction and release-validation drivers
 tests/             Dataset-free smoke tests
-results/paper/     Compact JSON/CSV/Markdown artifacts used by the paper
+results/paper/     Compact JSON artifacts used by the paper
 ```
 
 ## Installation
@@ -66,12 +66,6 @@ python scripts/check_release.py
 python scripts/reproduce.py --profile quick --dry-run
 ```
 
-For a dataset-free dual-path end-to-end example:
-
-```bash
-python experiments/quickstart_synthetic.py
-```
-
 ## Paper reproduction
 
 The reproduction driver prints commands unless `--execute` is supplied. This
@@ -84,9 +78,12 @@ python scripts/reproduce.py --profile full --dry-run
 
 # Execute one complete-corpus dataset after data/model preparation
 python experiments/run_full_corpus.py \
-  --dataset nq --split test --projection-dimension 256 \
+  --dataset nq --split test \
+  --semantic-projection-dimension 256 \
+  --lexical-work-dimension 8192 \
+  --lexical-projection-dimension 32 --lexical-cells 16 \
   --semantic-probes 128 --device cuda \
-  --cache-root experiments/cache/dual_compartment_full \
+  --cache-root experiments/cache/dueter_final \
   --output-root results/generated/dual_compartment_full
 
 # Security evaluation (requires the cached embeddings named by --known-query-files)
@@ -99,7 +96,7 @@ python scripts/reproduce.py --profile ablations --dry-run
 The full corpora contain 2.68M NQ, 5.23M HotpotQA, and 8.84M MS MARCO
 documents. Complete reproduction requires substantial disk space for source
 corpora, embeddings, compartment coordinates, and indexes. The released result
-summaries reproduce the paper tables without downloading those intermediates.
+JSON results record the paper values without redistributing those intermediates.
 See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for dataset splits, main parameters,
 hardware, seeds, and the mapping from paper claims to artifacts.
 
