@@ -1,0 +1,227 @@
+{
+  "experiment": "DuetRank calibration robustness with candidate-local exact BM25",
+  "fractions": [
+    0.25,
+    0.5,
+    1.0
+  ],
+  "nested_deterministic_subsets": true,
+  "datasets": {
+    "nq": {
+      "documents": 2681468,
+      "queries": 3452,
+      "split": "test",
+      "fixed_max_leaf_nodes": 31,
+      "fixed_semantic_backoff_weight": 0.5,
+      "rows": [
+        {
+          "calibration_fraction": 0.25,
+          "calibration_queries": 428,
+          "training_rows": 99310,
+          "training_positives": 491,
+          "training_seconds": 5.608515799976885,
+          "max_leaf_nodes": 31,
+          "semantic_backoff_weight": 0.5,
+          "outer_queries": 1739,
+          "semantic_nDCG@10": 0.5151346750195098,
+          "DuetRank_nDCG@10": 0.5210749632761841,
+          "gain_vs_semantic": {
+            "mean_absolute_gain": 0.005940288256674328,
+            "ci95_low": 0.0019804646249800984,
+            "ci95_high": 0.009986042505671122,
+            "one_sided_bootstrap_p": 0.0015996800639872025,
+            "query_win_fraction": 0.13456009200690053,
+            "query_tie_fraction": 0.780333525014376,
+            "query_loss_fraction": 0.0851063829787234
+          }
+        },
+        {
+          "calibration_fraction": 0.5,
+          "calibration_queries": 856,
+          "training_rows": 199012,
+          "training_positives": 997,
+          "training_seconds": 3.501886500045657,
+          "max_leaf_nodes": 31,
+          "semantic_backoff_weight": 0.5,
+          "outer_queries": 1739,
+          "semantic_nDCG@10": 0.5151346750195098,
+          "DuetRank_nDCG@10": 0.5199731033402832,
+          "gain_vs_semantic": {
+            "mean_absolute_gain": 0.004838428320773476,
+            "ci95_low": 0.00267766221265698,
+            "ci95_high": 0.007013039669900645,
+            "one_sided_bootstrap_p": 0.0001999600079984003,
+            "query_win_fraction": 0.10408280621046578,
+            "query_tie_fraction": 0.8453133985048878,
+            "query_loss_fraction": 0.05060379528464635
+          }
+        },
+        {
+          "calibration_fraction": 1.0,
+          "calibration_queries": 1713,
+          "training_rows": 398323,
+          "training_positives": 1959,
+          "training_seconds": 1.3023464999860153,
+          "max_leaf_nodes": 31,
+          "semantic_backoff_weight": 0.5,
+          "outer_queries": 1739,
+          "semantic_nDCG@10": 0.5151346750195098,
+          "DuetRank_nDCG@10": 0.5216726265549421,
+          "gain_vs_semantic": {
+            "mean_absolute_gain": 0.006537951535432338,
+            "ci95_low": 0.003319362592425829,
+            "ci95_high": 0.009746410431273833,
+            "one_sided_bootstrap_p": 0.0001999600079984003,
+            "query_win_fraction": 0.12018401380103508,
+            "query_tie_fraction": 0.7981598619896493,
+            "query_loss_fraction": 0.0816561242093157
+          }
+        }
+      ]
+    },
+    "hotpotqa": {
+      "documents": 5233329,
+      "queries": 7405,
+      "split": "test",
+      "fixed_max_leaf_nodes": 31,
+      "fixed_semantic_backoff_weight": 0.0,
+      "rows": [
+        {
+          "calibration_fraction": 0.25,
+          "calibration_queries": 916,
+          "training_rows": 219594,
+          "training_positives": 1499,
+          "training_seconds": 3.739070100011304,
+          "max_leaf_nodes": 31,
+          "semantic_backoff_weight": 0.0,
+          "outer_queries": 3740,
+          "semantic_nDCG@10": 0.6406171758505509,
+          "DuetRank_nDCG@10": 0.6814702583623502,
+          "gain_vs_semantic": {
+            "mean_absolute_gain": 0.040853082511799296,
+            "ci95_low": 0.03676917561780999,
+            "ci95_high": 0.04518522565952961,
+            "one_sided_bootstrap_p": 0.0001999600079984003,
+            "query_win_fraction": 0.24866310160427807,
+            "query_tie_fraction": 0.58475935828877,
+            "query_loss_fraction": 0.16657754010695186
+          }
+        },
+        {
+          "calibration_fraction": 0.5,
+          "calibration_queries": 1832,
+          "training_rows": 440078,
+          "training_positives": 3017,
+          "training_seconds": 1.1889390999567695,
+          "max_leaf_nodes": 31,
+          "semantic_backoff_weight": 0.0,
+          "outer_queries": 3740,
+          "semantic_nDCG@10": 0.6406171758505509,
+          "DuetRank_nDCG@10": 0.681690243379285,
+          "gain_vs_semantic": {
+            "mean_absolute_gain": 0.041073067528734,
+            "ci95_low": 0.03643601909244867,
+            "ci95_high": 0.04570851737374455,
+            "one_sided_bootstrap_p": 0.0001999600079984003,
+            "query_win_fraction": 0.25641711229946523,
+            "query_tie_fraction": 0.5569518716577541,
+            "query_loss_fraction": 0.18663101604278076
+          }
+        },
+        {
+          "calibration_fraction": 1.0,
+          "calibration_queries": 3665,
+          "training_rows": 878953,
+          "training_positives": 6029,
+          "training_seconds": 3.0286676000105217,
+          "max_leaf_nodes": 31,
+          "semantic_backoff_weight": 0.0,
+          "outer_queries": 3740,
+          "semantic_nDCG@10": 0.6406171758505509,
+          "DuetRank_nDCG@10": 0.682174085161271,
+          "gain_vs_semantic": {
+            "mean_absolute_gain": 0.04155690931072004,
+            "ci95_low": 0.03720963827974573,
+            "ci95_high": 0.045946075560115436,
+            "one_sided_bootstrap_p": 0.0001999600079984003,
+            "query_win_fraction": 0.25,
+            "query_tie_fraction": 0.5679144385026738,
+            "query_loss_fraction": 0.18208556149732621
+          }
+        }
+      ]
+    },
+    "msmarco": {
+      "documents": 8841823,
+      "queries": 6980,
+      "split": "dev",
+      "fixed_max_leaf_nodes": 31,
+      "fixed_semantic_backoff_weight": 0.0,
+      "rows": [
+        {
+          "calibration_fraction": 0.25,
+          "calibration_queries": 864,
+          "training_rows": 198494,
+          "training_positives": 811,
+          "training_seconds": 3.2548037000233307,
+          "max_leaf_nodes": 31,
+          "semantic_backoff_weight": 0.0,
+          "outer_queries": 3526,
+          "semantic_nDCG@10": 0.2834865032566423,
+          "DuetRank_nDCG@10": 0.29407648529742686,
+          "gain_vs_semantic": {
+            "mean_absolute_gain": 0.010589982040784544,
+            "ci95_low": 0.004334139203846235,
+            "ci95_high": 0.01673986898079539,
+            "one_sided_bootstrap_p": 0.0003999200159968006,
+            "query_win_fraction": 0.2073170731707317,
+            "query_tie_fraction": 0.6111741349971639,
+            "query_loss_fraction": 0.18150879183210436
+          }
+        },
+        {
+          "calibration_fraction": 0.5,
+          "calibration_queries": 1727,
+          "training_rows": 397368,
+          "training_positives": 1615,
+          "training_seconds": 1.3180831000208855,
+          "max_leaf_nodes": 31,
+          "semantic_backoff_weight": 0.0,
+          "outer_queries": 3526,
+          "semantic_nDCG@10": 0.2834865032566423,
+          "DuetRank_nDCG@10": 0.30204843862900227,
+          "gain_vs_semantic": {
+            "mean_absolute_gain": 0.018561935372359933,
+            "ci95_low": 0.01290394410428409,
+            "ci95_high": 0.024091999247207483,
+            "one_sided_bootstrap_p": 0.0001999600079984003,
+            "query_win_fraction": 0.19228587634713556,
+            "query_tie_fraction": 0.6426545660805445,
+            "query_loss_fraction": 0.1650595575723199
+          }
+        },
+        {
+          "calibration_fraction": 1.0,
+          "calibration_queries": 3454,
+          "training_rows": 795328,
+          "training_positives": 3208,
+          "training_seconds": 2.7796285999938846,
+          "max_leaf_nodes": 31,
+          "semantic_backoff_weight": 0.0,
+          "outer_queries": 3526,
+          "semantic_nDCG@10": 0.2834865032566423,
+          "DuetRank_nDCG@10": 0.302604333525954,
+          "gain_vs_semantic": {
+            "mean_absolute_gain": 0.019117830269311756,
+            "ci95_low": 0.013232828481634068,
+            "ci95_high": 0.024657917855733607,
+            "one_sided_bootstrap_p": 0.0001999600079984003,
+            "query_win_fraction": 0.18944980147475893,
+            "query_tie_fraction": 0.6355643788996029,
+            "query_loss_fraction": 0.1749858196256381
+          }
+        }
+      ]
+    }
+  }
+}

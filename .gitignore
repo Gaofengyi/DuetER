@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Environments and local dependencies
+.venv/
+venv/
+.deps/
+.gpu_deps/
+.venv_pisces_preprocess/
+
+# Local data, models, caches, and generated outputs
+data/
+cache/
+models/
+tmp/
+*.npy
+*.npz
+*.joblib
+*.pt
+*.pth
+*.bin
+*.sqlite
+*.sqlite3
+results/generated/
+experiments/results/
+experiments/cache/
+experiments/data/
+
+# Credentials and machine-local configuration
+.env
+.env.*
+!.env.example
+.vm_ssh/
+*.pem
+*.key
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+

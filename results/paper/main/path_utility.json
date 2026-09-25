@@ -1,0 +1,90 @@
+{
+  "experiment": "paired outer-holdout path utility for revised lexical CCADPE",
+  "metric": "outer-holdout nDCG@10",
+  "datasets": [
+    {
+      "dataset": "NQ",
+      "outer_holdout_queries": 1739,
+      "plain": {
+        "semantic": 0.5149307554289119,
+        "lexical": 0.2730119447341866,
+        "dual": 0.5201844980982083
+      },
+      "ccadpe": {
+        "semantic": 0.5151346750195098,
+        "lexical": 0.2722923390430779,
+        "dual": 0.5207032354392801
+      },
+      "revised_lexical_parameters": {
+        "hash_dimension": 1024,
+        "d_l": 8192,
+        "r_c_l": 32,
+        "K_l_cmp": 16,
+        "t_l": 64,
+        "returned_depth": 300
+      },
+      "controls": {
+        "candidate_pool": "same cumulative-posting pool within each lexical Plain/CCADPE pair",
+        "scoring": "exact cosine and candidate-local exact BM25",
+        "fusion": "same frozen revised DuetRank model and semantic backoff",
+        "reporting": "same SHA-256 outer holdout"
+      }
+    },
+    {
+      "dataset": "HotpotQA",
+      "outer_holdout_queries": 3740,
+      "plain": {
+        "semantic": 0.6410812661982176,
+        "lexical": 0.5812594278668679,
+        "dual": 0.6850840706682062
+      },
+      "ccadpe": {
+        "semantic": 0.6406171758505509,
+        "lexical": 0.5777526791029303,
+        "dual": 0.6833913394015391
+      },
+      "revised_lexical_parameters": {
+        "hash_dimension": 1024,
+        "d_l": 8192,
+        "r_c_l": 32,
+        "K_l_cmp": 16,
+        "t_l": 64,
+        "returned_depth": 300
+      },
+      "controls": {
+        "candidate_pool": "same cumulative-posting pool within each lexical Plain/CCADPE pair",
+        "scoring": "exact cosine and candidate-local exact BM25",
+        "fusion": "same frozen revised DuetRank model and semantic backoff",
+        "reporting": "same SHA-256 outer holdout"
+      }
+    },
+    {
+      "dataset": "MS MARCO",
+      "outer_holdout_queries": 3526,
+      "plain": {
+        "semantic": 0.2835972040163669,
+        "lexical": 0.22711514477599423,
+        "dual": 0.30235335956628384
+      },
+      "ccadpe": {
+        "semantic": 0.2834865032566423,
+        "lexical": 0.22577898548022424,
+        "dual": 0.3015123568086712
+      },
+      "revised_lexical_parameters": {
+        "hash_dimension": 1024,
+        "d_l": 8192,
+        "r_c_l": 32,
+        "K_l_cmp": 16,
+        "t_l": 64,
+        "returned_depth": 300
+      },
+      "controls": {
+        "candidate_pool": "same cumulative-posting pool within each lexical Plain/CCADPE pair",
+        "scoring": "exact cosine and candidate-local exact BM25",
+        "fusion": "same frozen revised DuetRank model and semantic backoff",
+        "reporting": "same SHA-256 outer holdout"
+      }
+    }
+  ]
+}

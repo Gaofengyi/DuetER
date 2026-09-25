@@ -1,0 +1,176 @@
+{
+  "experiment": "final dual-Compartment-DPE nprobe ablation",
+  "projection_dimension": 256,
+  "semantic_cells": 2048,
+  "fixed_seed": 20260917,
+  "datasets": {
+    "nq": {
+      "documents": 2681468,
+      "queries": 3452,
+      "split": "test",
+      "reference": "exact dense",
+      "reference_metrics": {
+        "nDCG@10": 0.5211644108438569,
+        "MRR@10": 0.464069483529217,
+        "Recall@10": 0.7463547701815374,
+        "Recall@100": 0.9426419466975666
+      },
+      "rows": [
+        {
+          "nprobe": 64,
+          "local_depth": 16,
+          "scan_percent": 6.8621139800386155,
+          "mean_union": 948.2920046349942,
+          "reference_top100_coverage": 0.6822392815758981,
+          "nDCG@10": 0.5159635844189687,
+          "nDCG@10_retention": 0.990020756757993,
+          "Recall@100": 0.8987060641174197,
+          "Recall@100_retention": 0.9533906986273303,
+          "batch_server_ms_per_query": 4.748244264187965,
+          "interactive_server_ms": 375.3475200093817,
+          "client_rerank_ms_per_query": 52.29067873696487
+        },
+        {
+          "nprobe": 128,
+          "local_depth": 16,
+          "scan_percent": 13.19415486428327,
+          "mean_union": 1907.1352838933951,
+          "reference_top100_coverage": 0.7294843568945539,
+          "nDCG@10": 0.51833240456792,
+          "nDCG@10_retention": 0.9945660021731887,
+          "Recall@100": 0.9096658941676322,
+          "Recall@100_retention": 0.965017414464249,
+          "batch_server_ms_per_query": 4.716552578213356,
+          "interactive_server_ms": 774.5318999921437,
+          "client_rerank_ms_per_query": 11.602369785629689
+        },
+        {
+          "nprobe": 256,
+          "local_depth": 16,
+          "scan_percent": 25.588105160314623,
+          "mean_union": 3827.572132097335,
+          "reference_top100_coverage": 0.7608111239860951,
+          "nDCG@10": 0.5198443588111358,
+          "nDCG@10_retention": 0.9974671101762614,
+          "Recall@100": 0.9165701042873696,
+          "Recall@100_retention": 0.972341733251383,
+          "batch_server_ms_per_query": 6.0965931344100035,
+          "interactive_server_ms": 1328.6696399911307,
+          "client_rerank_ms_per_query": 12.127940961763965
+        }
+      ]
+    },
+    "hotpotqa": {
+      "documents": 5233329,
+      "queries": 7405,
+      "split": "test",
+      "reference": "exact dense",
+      "reference_metrics": {
+        "nDCG@10": 0.6467659140316789,
+        "MRR@10": 0.8048351071241011,
+        "Recall@10": 0.6746792707629979,
+        "Recall@100": 0.7931802835921674
+      },
+      "rows": [
+        {
+          "nprobe": 64,
+          "local_depth": 16,
+          "scan_percent": 6.637542106280322,
+          "mean_union": 959.9638082376772,
+          "reference_top100_coverage": 0.6390735989196489,
+          "nDCG@10": 0.6294964685181322,
+          "nDCG@10_retention": 0.9732987698657527,
+          "Recall@100": 0.7457123565158676,
+          "Recall@100_retention": 0.9401549331744276,
+          "batch_server_ms_per_query": 3.411217393654013,
+          "interactive_server_ms": 718.3730399992783,
+          "client_rerank_ms_per_query": 62.748056448345054
+        },
+        {
+          "nprobe": 128,
+          "local_depth": 16,
+          "scan_percent": 12.814459237680847,
+          "mean_union": 1927.2811613774477,
+          "reference_top100_coverage": 0.6900337609723161,
+          "nDCG@10": 0.63925464338804,
+          "nDCG@10_retention": 0.9883864154237555,
+          "Recall@100": 0.761782579338285,
+          "Recall@100_retention": 0.9604154252149486,
+          "batch_server_ms_per_query": 3.379842862933321,
+          "interactive_server_ms": 1423.7359200022183,
+          "client_rerank_ms_per_query": 11.554235705606208
+        },
+        {
+          "nprobe": 256,
+          "local_depth": 16,
+          "scan_percent": 25.031745513497782,
+          "mean_union": 3866.3261309925724,
+          "reference_top100_coverage": 0.7214463200540177,
+          "nDCG@10": 0.6436497529195105,
+          "nDCG@10_retention": 0.9951819336106575,
+          "Recall@100": 0.7698176907494936,
+          "Recall@100_retention": 0.9705456712352091,
+          "batch_server_ms_per_query": 5.173702916948868,
+          "interactive_server_ms": 2736.431419994915,
+          "client_rerank_ms_per_query": 13.577835732615998
+        }
+      ]
+    },
+    "msmarco": {
+      "documents": 8841823,
+      "queries": 6980,
+      "split": "dev",
+      "reference": "pre-compartment global-DPE IVF",
+      "reference_metrics": {
+        "nDCG@10": 0.2881045936148537,
+        "MRR@10": 0.2335630713603493,
+        "Recall@10": 0.47243314231136574,
+        "Recall@100": 0.7819006685768862
+      },
+      "rows": [
+        {
+          "nprobe": 64,
+          "local_depth": 32,
+          "scan_percent": 6.688973174702116,
+          "mean_union": 1912.7103151862464,
+          "reference_top100_coverage": 0.7888366762177652,
+          "nDCG@10": 0.28448849343315363,
+          "nDCG@10_retention": 0.9874486548918614,
+          "Recall@100": 0.7480062082139446,
+          "Recall@100_retention": 0.9566511940389667,
+          "batch_server_ms_per_query": 5.076028968482398,
+          "interactive_server_ms": 2427.079799992498,
+          "client_rerank_ms_per_query": 128.21278167621836
+        },
+        {
+          "nprobe": 128,
+          "local_depth": 32,
+          "scan_percent": 12.990973538448104,
+          "mean_union": 3842.069770773639,
+          "reference_top100_coverage": 0.8232808022922636,
+          "nDCG@10": 0.2879869793679193,
+          "nDCG@10_retention": 0.9995917654576114,
+          "Recall@100": 0.7619746895893027,
+          "Recall@100_retention": 0.9745159714163563,
+          "batch_server_ms_per_query": 6.051368309453598,
+          "interactive_server_ms": 3738.750360009726,
+          "client_rerank_ms_per_query": 72.51112244985808
+        },
+        {
+          "nprobe": 256,
+          "local_depth": 32,
+          "scan_percent": 25.38254480145879,
+          "mean_union": 7701.432664756447,
+          "reference_top100_coverage": 0.8308209169054441,
+          "nDCG@10": 0.2886464749391821,
+          "nDCG@10_retention": 1.001880849303822,
+          "Recall@100": 0.7701170009551097,
+          "Recall@100_retention": 0.98492945703292,
+          "batch_server_ms_per_query": 8.304681017190815,
+          "interactive_server_ms": 7451.622659992427,
+          "client_rerank_ms_per_query": 76.60080183380872
+        }
+      ]
+    }
+  }
+}

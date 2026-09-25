@@ -1,0 +1,8 @@
+-r requirements.txt
+# Install a CUDA-compatible PyTorch wheel for the local driver when using a GPU.
+# The reported GPU runs used torch 2.12.1 with CUDA 12.6.
+torch==2.12.1
+transformers==5.15.1
+sentence-transformers==6.0.0
+huggingface-hub==1.28.0
+

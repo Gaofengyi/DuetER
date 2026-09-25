@@ -1,0 +1,172 @@
+{
+  "results": [
+    {
+      "known_queries": 32,
+      "available_queries": 623,
+      "document_sample_per_repeat": 1000,
+      "repeats": 10,
+      "recovered_cosine_all_targets": 0.8356118679046631,
+      "recovered_cosine_all_targets_std": 0.003716614717211947,
+      "recovered_cosine_covered_targets": 0.8006890118122101,
+      "known_query_mean_baseline_cosine": 0.8356065630912781,
+      "target_compartment_coverage": 0.0865,
+      "trials": [
+        0.8411234021186829,
+        0.8308902382850647,
+        0.8300086855888367,
+        0.83613121509552,
+        0.837027907371521,
+        0.8390489220619202,
+        0.8312514424324036,
+        0.837920069694519,
+        0.8369536399841309,
+        0.835763156414032
+      ],
+      "excess_over_mean_baseline": 5.304813385009766e-06
+    },
+    {
+      "known_queries": 64,
+      "available_queries": 623,
+      "document_sample_per_repeat": 1000,
+      "repeats": 10,
+      "recovered_cosine_all_targets": 0.8365976512432098,
+      "recovered_cosine_all_targets_std": 0.0013764941218901178,
+      "recovered_cosine_covered_targets": 0.805974680185318,
+      "known_query_mean_baseline_cosine": 0.8365841746330261,
+      "target_compartment_coverage": 0.16379999999999997,
+      "trials": [
+        0.8374838829040527,
+        0.8351923823356628,
+        0.8344566822052002,
+        0.837965726852417,
+        0.8375097513198853,
+        0.8380378484725952,
+        0.835999071598053,
+        0.8380479216575623,
+        0.836207926273346,
+        0.835075318813324
+      ],
+      "excess_over_mean_baseline": 1.3476610183693616e-05
+    },
+    {
+      "known_queries": 128,
+      "available_queries": 623,
+      "document_sample_per_repeat": 1000,
+      "repeats": 10,
+      "recovered_cosine_all_targets": 0.8346522450447083,
+      "recovered_cosine_all_targets_std": 0.0012321984948570066,
+      "recovered_cosine_covered_targets": 0.8124203979969025,
+      "known_query_mean_baseline_cosine": 0.8346363782882691,
+      "target_compartment_coverage": 0.27990000000000004,
+      "trials": [
+        0.8335250020027161,
+        0.837203323841095,
+        0.8329803943634033,
+        0.8341010808944702,
+        0.8341692090034485,
+        0.8353585004806519,
+        0.8340870141983032,
+        0.8341271281242371,
+        0.8356746435165405,
+        0.8352961540222168
+      ],
+      "excess_over_mean_baseline": 1.5866756439164575e-05
+    },
+    {
+      "known_queries": 256,
+      "available_queries": 623,
+      "document_sample_per_repeat": 1000,
+      "repeats": 10,
+      "recovered_cosine_all_targets": 0.8352728188037872,
+      "recovered_cosine_all_targets_std": 0.0009435051325139005,
+      "recovered_cosine_covered_targets": 0.8233043849468231,
+      "known_query_mean_baseline_cosine": 0.8351496458053589,
+      "target_compartment_coverage": 0.4375,
+      "trials": [
+        0.8364410400390625,
+        0.8347495794296265,
+        0.8340068459510803,
+        0.8364802002906799,
+        0.8345363736152649,
+        0.8350006937980652,
+        0.8354269862174988,
+        0.834632933139801,
+        0.8366888165473938,
+        0.8347647190093994
+      ],
+      "excess_over_mean_baseline": 0.00012317299842834473
+    },
+    {
+      "known_queries": 384,
+      "available_queries": 623,
+      "document_sample_per_repeat": 1000,
+      "repeats": 10,
+      "recovered_cosine_all_targets": 0.8382283449172974,
+      "recovered_cosine_all_targets_std": 0.001556728584139541,
+      "recovered_cosine_covered_targets": 0.8321339905261993,
+      "known_query_mean_baseline_cosine": 0.8379915356636047,
+      "target_compartment_coverage": 0.5365,
+      "trials": [
+        0.8388413190841675,
+        0.8375407457351685,
+        0.8381428122520447,
+        0.8414847254753113,
+        0.836904764175415,
+        0.8399496078491211,
+        0.8370472192764282,
+        0.8363230228424072,
+        0.8385383486747742,
+        0.837510883808136
+      ],
+      "excess_over_mean_baseline": 0.00023680925369262695
+    },
+    {
+      "known_queries": 512,
+      "available_queries": 623,
+      "document_sample_per_repeat": 1000,
+      "repeats": 10,
+      "recovered_cosine_all_targets": 0.8417323231697083,
+      "recovered_cosine_all_targets_std": 0.0011180102345524604,
+      "recovered_cosine_covered_targets": 0.839303320646286,
+      "known_query_mean_baseline_cosine": 0.8413551032543183,
+      "target_compartment_coverage": 0.6071,
+      "trials": [
+        0.8412628173828125,
+        0.8431240320205688,
+        0.8406814932823181,
+        0.8412448763847351,
+        0.8432503342628479,
+        0.8433820605278015,
+        0.8408617377281189,
+        0.8419905304908752,
+        0.8408610820770264,
+        0.840664267539978
+      ],
+      "excess_over_mean_baseline": 0.00037721991538997024
+    },
+    {
+      "known_queries": 623,
+      "available_queries": 623,
+      "document_sample_per_repeat": 1000,
+      "repeats": 10,
+      "recovered_cosine_all_targets": 0.8429039180278778,
+      "recovered_cosine_all_targets_std": 0.0011260659000955798,
+      "recovered_cosine_covered_targets": 0.8414735019207,
+      "known_query_mean_baseline_cosine": 0.8424218654632568,
+      "target_compartment_coverage": 0.6574000000000001,
+      "trials": [
+        0.8425275087356567,
+        0.8436971306800842,
+        0.8447818756103516,
+        0.8420969843864441,
+        0.8429421782493591,
+        0.8429318070411682,
+        0.8418747782707214,
+        0.8409489989280701,
+        0.843090832233429,
+        0.8441470861434937
+      ],
+      "excess_over_mean_baseline": 0.0004820525646209717
+    }
+  ]
+}

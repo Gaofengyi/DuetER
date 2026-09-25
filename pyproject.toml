@@ -1,0 +1,14 @@
+[project]
+name = "dueter-research"
+version = "0.1.0"
+description = "Research artifact for dual-path encrypted retrieval"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+

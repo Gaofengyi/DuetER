@@ -1,0 +1,271 @@
+{
+  "experiment": "standard unweighted RRF on revised exact-BM25 candidate rankings",
+  "evaluation": "same SHA-256 outer holdouts as the final DuetRank figure",
+  "bootstrap_samples": 5000,
+  "datasets": [
+    {
+      "dataset": "NQ",
+      "outer_holdout_queries": 1739,
+      "rrf": {
+        "constant": 60,
+        "semantic_weight": 0.5,
+        "lexical_weight": 0.5,
+        "selection": "fixed a priori; no calibration or test tuning"
+      },
+      "executions": {
+        "plain": {
+          "metrics": {
+            "semantic": {
+              "ndcg_at_10": 0.5149307554289119,
+              "recall_at_10": 0.7326528656315892,
+              "hit_at_10": 0.765382403680276
+            },
+            "lexical": {
+              "ndcg_at_10": 0.2730119447341866,
+              "recall_at_10": 0.42965305731263176,
+              "hit_at_10": 0.46463484761357104
+            },
+            "rrf": {
+              "ndcg_at_10": 0.420575531733501,
+              "recall_at_10": 0.637770749472877,
+              "hit_at_10": 0.6745255894192065
+            },
+            "duetrank": {
+              "ndcg_at_10": 0.5201844980982083,
+              "recall_at_10": 0.741422273337167,
+              "hit_at_10": 0.7734330074755607
+            }
+          },
+          "paired_differences": {
+            "rrf_minus_semantic": {
+              "mean": -0.0943552236954108,
+              "ci95_low": -0.10963241489385142,
+              "ci95_high": -0.07866614451467736,
+              "two_sided_bootstrap_p": 0.0003999200159968006
+            },
+            "duetrank_minus_rrf": {
+              "mean": 0.09960896636470731,
+              "ci95_low": 0.08450443592837692,
+              "ci95_high": 0.11444339719601702,
+              "two_sided_bootstrap_p": 0.0003999200159968006
+            }
+          }
+        },
+        "ccadpe": {
+          "metrics": {
+            "semantic": {
+              "ndcg_at_10": 0.5151346750195098,
+              "recall_at_10": 0.7339946329308031,
+              "hit_at_10": 0.7665324899367453
+            },
+            "lexical": {
+              "ndcg_at_10": 0.2722923390430779,
+              "recall_at_10": 0.427065363235576,
+              "hit_at_10": 0.46348476135710176
+            },
+            "rrf": {
+              "ndcg_at_10": 0.4192666262257216,
+              "recall_at_10": 0.631828637147786,
+              "hit_at_10": 0.6670500287521565
+            },
+            "duetrank": {
+              "ndcg_at_10": 0.5207032354392801,
+              "recall_at_10": 0.7437224458501054,
+              "hit_at_10": 0.7751581368602645
+            }
+          },
+          "paired_differences": {
+            "rrf_minus_semantic": {
+              "mean": -0.09586804879378825,
+              "ci95_low": -0.11105855678858935,
+              "ci95_high": -0.08050090179880146,
+              "two_sided_bootstrap_p": 0.0003999200159968006
+            },
+            "duetrank_minus_rrf": {
+              "mean": 0.10143660921355854,
+              "ci95_low": 0.08669626310380889,
+              "ci95_high": 0.11610620879918425,
+              "two_sided_bootstrap_p": 0.0003999200159968006
+            }
+          }
+        }
+      }
+    },
+    {
+      "dataset": "HotpotQA",
+      "outer_holdout_queries": 3740,
+      "rrf": {
+        "constant": 60,
+        "semantic_weight": 0.5,
+        "lexical_weight": 0.5,
+        "selection": "fixed a priori; no calibration or test tuning"
+      },
+      "executions": {
+        "plain": {
+          "metrics": {
+            "semantic": {
+              "ndcg_at_10": 0.6410812661982176,
+              "recall_at_10": 0.6664438502673797,
+              "hit_at_10": 0.9122994652406418
+            },
+            "lexical": {
+              "ndcg_at_10": 0.5812594278668679,
+              "recall_at_10": 0.6005347593582888,
+              "hit_at_10": 0.8780748663101604
+            },
+            "rrf": {
+              "ndcg_at_10": 0.6473614968700947,
+              "recall_at_10": 0.6786096256684492,
+              "hit_at_10": 0.9302139037433155
+            },
+            "duetrank": {
+              "ndcg_at_10": 0.6850840706682062,
+              "recall_at_10": 0.7207219251336898,
+              "hit_at_10": 0.9505347593582888
+            }
+          },
+          "paired_differences": {
+            "rrf_minus_semantic": {
+              "mean": 0.006280230671877192,
+              "ci95_low": -0.0005005085140675591,
+              "ci95_high": 0.012883275966232483,
+              "two_sided_bootstrap_p": 0.06958608278344332
+            },
+            "duetrank_minus_rrf": {
+              "mean": 0.037722573798111496,
+              "ci95_low": 0.03312254604198944,
+              "ci95_high": 0.042348746825253386,
+              "two_sided_bootstrap_p": 0.0003999200159968006
+            }
+          }
+        },
+        "ccadpe": {
+          "metrics": {
+            "semantic": {
+              "ndcg_at_10": 0.6406171758505509,
+              "recall_at_10": 0.6653297682709447,
+              "hit_at_10": 0.9119429590017826
+            },
+            "lexical": {
+              "ndcg_at_10": 0.5777526791029303,
+              "recall_at_10": 0.5966577540106952,
+              "hit_at_10": 0.8740641711229946
+            },
+            "rrf": {
+              "ndcg_at_10": 0.6416497008921919,
+              "recall_at_10": 0.6731729055258467,
+              "hit_at_10": 0.9271836007130124
+            },
+            "duetrank": {
+              "ndcg_at_10": 0.6833913394015391,
+              "recall_at_10": 0.7177807486631016,
+              "hit_at_10": 0.949108734402852
+            }
+          },
+          "paired_differences": {
+            "rrf_minus_semantic": {
+              "mean": 0.0010325250416409067,
+              "ci95_low": -0.0056765743351106035,
+              "ci95_high": 0.007404619656489354,
+              "two_sided_bootstrap_p": 0.7598480303939212
+            },
+            "duetrank_minus_rrf": {
+              "mean": 0.04174163850934724,
+              "ci95_low": 0.03714855363346701,
+              "ci95_high": 0.04643438934750537,
+              "two_sided_bootstrap_p": 0.0003999200159968006
+            }
+          }
+        }
+      }
+    },
+    {
+      "dataset": "MS MARCO",
+      "outer_holdout_queries": 3526,
+      "rrf": {
+        "constant": 60,
+        "semantic_weight": 0.5,
+        "lexical_weight": 0.5,
+        "selection": "fixed a priori; no calibration or test tuning"
+      },
+      "executions": {
+        "plain": {
+          "metrics": {
+            "semantic": {
+              "ndcg_at_10": 0.2835972040163669,
+              "recall_at_10": 0.46757421062582716,
+              "hit_at_10": 0.4761769710720363
+            },
+            "lexical": {
+              "ndcg_at_10": 0.22711514477599423,
+              "recall_at_10": 0.3764416713934581,
+              "hit_at_10": 0.38258650028360747
+            },
+            "rrf": {
+              "ndcg_at_10": 0.28506161310799927,
+              "recall_at_10": 0.4703630175836642,
+              "hit_at_10": 0.47872943845717525
+            },
+            "duetrank": {
+              "ndcg_at_10": 0.30235335956628384,
+              "recall_at_10": 0.5028833427869163,
+              "hit_at_10": 0.5116279069767442
+            }
+          },
+          "paired_differences": {
+            "rrf_minus_semantic": {
+              "mean": 0.0014644090916323858,
+              "ci95_low": -0.00743768609568345,
+              "ci95_high": 0.010362499476715747,
+              "two_sided_bootstrap_p": 0.742251549690062
+            },
+            "duetrank_minus_rrf": {
+              "mean": 0.01729174645828454,
+              "ci95_low": 0.01161489972817213,
+              "ci95_high": 0.023067187210541386,
+              "two_sided_bootstrap_p": 0.0003999200159968006
+            }
+          }
+        },
+        "ccadpe": {
+          "metrics": {
+            "semantic": {
+              "ndcg_at_10": 0.2834865032566423,
+              "recall_at_10": 0.467716014369446,
+              "hit_at_10": 0.4758933635847986
+            },
+            "lexical": {
+              "ndcg_at_10": 0.22577898548022424,
+              "recall_at_10": 0.37445641898279447,
+              "hit_at_10": 0.3808848553601815
+            },
+            "rrf": {
+              "ndcg_at_10": 0.2827668391952336,
+              "recall_at_10": 0.4664870485914162,
+              "hit_at_10": 0.4753261486103233
+            },
+            "duetrank": {
+              "ndcg_at_10": 0.3015123568086712,
+              "recall_at_10": 0.5018907165815844,
+              "hit_at_10": 0.5107770845150312
+            }
+          },
+          "paired_differences": {
+            "rrf_minus_semantic": {
+              "mean": -0.0007196640614086708,
+              "ci95_low": -0.009632047125728535,
+              "ci95_high": 0.008144286969858847,
+              "two_sided_bootstrap_p": 0.8698260347930414
+            },
+            "duetrank_minus_rrf": {
+              "mean": 0.018745517613437592,
+              "ci95_low": 0.01304489757856051,
+              "ci95_high": 0.024498154721323967,
+              "two_sided_bootstrap_p": 0.0003999200159968006
+            }
+          }
+        }
+      }
+    }
+  ]
+}

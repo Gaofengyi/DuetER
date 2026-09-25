@@ -1,0 +1,9 @@
+# Versions used for the released CPU-side retrieval, analysis, and plotting code.
+numpy==2.5.2
+scipy==1.18.1
+scikit-learn==1.9.0
+joblib==1.5.3
+cryptography==50.0.1
+Pillow==12.3.0
+reportlab==4.4.9
+
