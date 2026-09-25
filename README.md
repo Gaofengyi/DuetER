@@ -107,9 +107,9 @@ hardware, seeds, and the mapping from paper claims to artifacts.
 ## Comparison artifacts
 
 This release contains only DuetER implementation code. It does not redistribute
-Pisces, PRAG, a functional substitute for either system, or scripts that build
-and execute those systems. Compact comparison values used by the paper remain
-under `results/paper/baselines/` as non-executable audit metadata with explicit
+external systems, functional substitutes for them, or scripts that build and
+execute them. Compact comparison values used by the paper remain under
+`results/paper/baselines/` as non-executable audit metadata with explicit
 provenance. Reproducing an external baseline requires obtaining its official
 source from the original authors and following its license.
 
